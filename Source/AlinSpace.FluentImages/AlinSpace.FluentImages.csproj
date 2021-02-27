@@ -2,6 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <Authors>Alin Andersen</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © 2021 Alin Andersen</Copyright>
+    <Description>Fluent image processing.</Description>
+    <PackageProjectUrl>https://github.com/onixion/FluentImages</PackageProjectUrl>
+    <PackageIcon>Icon.jpg</PackageIcon>
+    <RepositoryUrl>https://github.com/onixion/FluentImages</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>fluent, images, fluentimages, fluent images, image processing</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>1.0.1</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Icon.jpg" />
+    <None Remove="Icon.jpg" />
+    <None Include="Icon.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

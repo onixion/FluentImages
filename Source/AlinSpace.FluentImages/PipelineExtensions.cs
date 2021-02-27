@@ -5,6 +5,29 @@
     /// </summary>
     public static class PipelineExtensions
     {
+        #region Export
+
+        /// <summary>
+        /// Execute pipeline.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="image">Image to push through the pipeline.</param>
+        /// <param name="path">Path to export the file to.</param>
+        /// <param name="format">Format to export to.</param>
+        /// <param name="quality">Quality when exporting.</param>
+        /// <returns>New image created by the pipeline.</returns>
+        public static Pipeline ExecuteAndExportToFile(this Pipeline pipeline, IImage image, string path, Format format = Format.Jpg, Quality quality = Quality.Best)
+        {
+            var outputImage = pipeline.Execute(image);
+            outputImage.ExportToFile(path, format, quality);
+
+            return pipeline;
+        }
+
+        #endregion
+
+        #region Resizing
+
         /// <summary>
         /// Resize image to a specific size.
         /// </summary>
@@ -27,10 +50,10 @@
         /// <returns>New resized image.</returns>
         public static Pipeline ResizeInPercentage(this Pipeline pipeline, double widthNormalized, double heigthNormalized)
         {
-            pipeline.AddStage(image 
-                => image.ResizeTo(
-                    (int)(image.Width * widthNormalized), 
-                    (int)(image.Height * heigthNormalized)));
+            pipeline.AddStage(image => 
+                image.ResizeTo(
+                    width: (int)(image.Width * widthNormalized), 
+                    height: (int)(image.Height * heigthNormalized)));
 
             return pipeline;
         }
@@ -98,5 +121,86 @@
                 return image.ResizeTo((int)newWidth, (int)newHeight);
             });
         }
+
+        #endregion
+
+        #region Flipping
+
+        /// <summary>
+        /// Flip image.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="direction">Flip direction.</param>
+        /// <returns>Pipeline.</returns>
+        public static Pipeline Flip(this Pipeline pipeline, FlipDirection direction)
+        {
+            return pipeline.AddStage(image => image.Flip(direction));
+        }
+
+        #endregion
+
+        #region Rotating
+
+        /// <summary>
+        /// Rotate image in degrees.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="degrees">Degrees to rotate.</param>
+        /// <param name="x">X coordinate of the rotation point.</param>
+        /// <param name="y">Y coordinate of the rotation point.</param>
+        /// <returns>Pipeline.</returns>
+        public static Pipeline RotateInDegrees(this Pipeline pipeline, double degrees, double x, double y)
+        {
+            return pipeline.AddStage(image => image.RotateInDegrees(degrees, x, y));
+        }
+
+        /// <summary>
+        /// Rotate image in degrees.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="degrees">Degrees to rotate.</param>
+        /// <returns>Pipeline.</returns>
+        public static Pipeline RotateInDegrees(this Pipeline pipeline, double degrees)
+        {
+            return pipeline.AddStage(image => 
+                image.RotateInDegrees(
+                    degrees: degrees, 
+                    x: image.Width / 2.0f,
+                    y: image.Height / 2.0f));
+        }
+
+        /// <summary>
+        /// Rotate image in percentage.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="factor">Normalized percentage value.</param>
+        /// <param name="x">X coordinate of the rotation point.</param>
+        /// <param name="y">Y coordinate of the rotation point.</param>
+        /// <returns>Pipeline.</returns>
+        public static Pipeline RotateInPercentage(this Pipeline pipeline, double factor, double x, double y)
+        {
+            return pipeline.AddStage(image => 
+                image.RotateInDegrees(
+                    degrees: factor * 360.0, 
+                    x: x, 
+                    y: y));
+        }
+
+        /// <summary>
+        /// Rotate image in percentage.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="factor">Normalized percentage value.</param>
+        /// <returns>Pipeline.</returns>
+        public static Pipeline RotateInPercentage(this Pipeline pipeline, double factor)
+        {
+            return pipeline.AddStage(image =>
+                image.RotateInDegrees(
+                    degrees: factor * 360.0,
+                    x: image.Width / 2.0f,
+                    y: image.Height / 2.0f));
+        }
+
+        #endregion
     }
 }

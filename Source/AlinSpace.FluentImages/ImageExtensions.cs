@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 
 namespace AlinSpace.FluentImages
 {
@@ -25,14 +26,25 @@ namespace AlinSpace.FluentImages
         /// <param name="format">Image format for encoding.</param>
         /// <param name="quality">Image quality to use.</param>
         /// <remarks>
-        /// If the path does not contain a file extension, the file extension will be added.
+        /// If the path does not contain a valid image file extension, the file extension will be added.
         /// </remarks>
         public static void ExportToFile(this IImage image, string path, Format format = Format.Jpg, Quality quality = Quality.Best)
         {
             var rawBytes = image.Export(format, quality);
 
             if (!Path.HasExtension(path))
+            {
                 path = $"{path}.{format.ToFileExtension()}";
+            }
+            else
+            {
+                var extension = Path.GetExtension(path).Skip(1).ToArray().ToString();
+
+                if (!format.CompatibleWithFileExtension(extension))
+                {
+                    path = $"{path}.{format.ToFileExtension()}";
+                }
+            }
 
             File.WriteAllBytes(path, rawBytes);
         }

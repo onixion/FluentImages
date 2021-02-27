@@ -1,4 +1,5 @@
 ﻿using SkiaSharp;
+using System;
 
 namespace AlinSpace.FluentImages.SkiaSharp
 {
@@ -85,6 +86,81 @@ namespace AlinSpace.FluentImages.SkiaSharp
             }
 
             return new Image(newBitmap);
+        }
+
+        /// <summary>
+        /// Flip image.
+        /// </summary>
+        /// <param name="direction">Flip direction.</param>
+        /// <returns>Flipped image.</returns>
+        public IImage Flip(FlipDirection direction)
+        {
+            SKBitmap newBitmap = null;
+
+            try
+            {
+                newBitmap = new SKBitmap(bitmap.Width, bitmap.Height);
+
+                var sx = 1.0f;
+                var sy = 1.0f;
+                var px = 0.0f;
+                var py = 0.0f;
+
+                if (direction == FlipDirection.Horizontal || direction == FlipDirection.Both)
+                {
+                    sx = -1.0f;
+                    px = bitmap.Width / 2.0f;
+                }
+
+                if (direction == FlipDirection.Vertical || direction == FlipDirection.Both)
+                {
+                    sy = -1.0f;
+                    py = bitmap.Height / 2.0f;
+                }
+
+                using (SKCanvas canvas = new SKCanvas(newBitmap))
+                {
+                    canvas.Scale(sx, sy, px, py);
+                    canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
+                }
+
+                return new Image(newBitmap);
+            }
+            catch(Exception)
+            {
+                newBitmap?.Dispose();
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Rotate image by degree.
+        /// </summary>
+        /// <param name="degrees">Degrees to rotate.</param>
+        /// <param name="x">X coordinate of the rotation point.</param>
+        /// <param name="y">Y coordinate of the rotation point.</param>
+        /// <returns>Rotated image.</returns>
+        public IImage RotateInDegrees(double degrees, double x, double y)
+        {
+            SKBitmap newBitmap = null;
+
+            try
+            {
+                newBitmap = new SKBitmap(bitmap.Width, bitmap.Height);
+
+                using (SKCanvas canvas = new SKCanvas(newBitmap))
+                {
+                    canvas.RotateDegrees((float)degrees, (float)x, (float)y);
+                    canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
+                }
+
+                return new Image(newBitmap);
+            }
+            catch (Exception)
+            {
+                newBitmap?.Dispose();
+                throw;
+            }
         }
     }
 }

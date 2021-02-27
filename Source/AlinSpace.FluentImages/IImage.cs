@@ -38,5 +38,21 @@ namespace AlinSpace.FluentImages
         /// <param name="height">Height.</param>
         /// <returns>New resized image.</returns>
         IImage ResizeTo(int width, int height);
+
+        /// <summary>
+        /// Flip image.
+        /// </summary>
+        /// <param name="direction">Flip direction.</param>
+        /// <returns>Flipped image.</returns>
+        IImage Flip(FlipDirection direction);
+
+        /// <summary>
+        /// Rotate image in degrees.
+        /// </summary>
+        /// <param name="degrees">Degrees to rotate.</param>
+        /// <param name="x">X coordinate of the rotation point.</param>
+        /// <param name="y">Y coordinate of the rotation point.</param>
+        /// <returns>Rotated image.</returns>
+        IImage RotateInDegrees(double degrees, double x, double y);
     }
 }

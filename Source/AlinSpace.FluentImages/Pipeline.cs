@@ -53,7 +53,7 @@ namespace AlinSpace.FluentImages
         /// <summary>
         /// Execute pipeline.
         /// </summary>
-        /// <param name="image">Image to execute the pipeline on.</param>
+        /// <param name="image">Image to push through the pipeline.</param>
         /// <returns>New image created by the pipeline.</returns>
         public IImage Execute(IImage image)
         {

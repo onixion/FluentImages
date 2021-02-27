@@ -1,6 +1,6 @@
 <img src="https://github.com/onixion/FluentImages/blob/main/Assets/Icon.jpg" width="200" height="200">
 
-# FluentImages
+# FluentImages (Work-in-Progress)
 [![NuGet version (FluentImages)](https://img.shields.io/nuget/v/AlinSpace.FluentImages.svg?style=flat-square)](https://www.nuget.org/packages/AlinSpace.FluentImages/)
 
 A simple fluent library for image processing.

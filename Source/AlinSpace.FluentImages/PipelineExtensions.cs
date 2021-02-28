@@ -1,4 +1,6 @@
-﻿namespace AlinSpace.FluentImages
+﻿using System;
+
+namespace AlinSpace.FluentImages
 {
     /// <summary>
     /// Extensions for <see cref="Pipeline"/>.
@@ -16,7 +18,7 @@
         /// <param name="format">Format to export to.</param>
         /// <param name="quality">Quality when exporting.</param>
         /// <returns>New image created by the pipeline.</returns>
-        public static Pipeline ExecuteAndExportToFile(this Pipeline pipeline, IImage image, string path, Format format = Format.Jpg, Quality quality = Quality.Best)
+        public static Pipeline ExportToFile(this Pipeline pipeline, IImage image, string path, Format format = Format.Jpg, Quality quality = Quality.Best)
         {
             var outputImage = pipeline.Execute(image);
             outputImage.ExportToFile(path, format, quality);
@@ -26,7 +28,7 @@
 
         #endregion
 
-        #region Resizing
+        #region Resize
 
         /// <summary>
         /// Resize image to a specific size.
@@ -124,7 +126,7 @@
 
         #endregion
 
-        #region Flipping
+        #region Flip
 
         /// <summary>
         /// Flip image.
@@ -139,7 +141,7 @@
 
         #endregion
 
-        #region Rotating
+        #region Rotate
 
         /// <summary>
         /// Rotate image in degrees.
@@ -200,6 +202,53 @@
                     x: image.Width / 2.0f,
                     y: image.Height / 2.0f));
         }
+
+        #endregion
+
+        #region Translate
+
+        /// <summary>
+        /// Translate image by pixel offset.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="x">X coordinate pixel offset.</param>
+        /// <param name="y">Y coordinate pixel offset.</param>
+        /// <returns>Translated image.</returns>
+        public static Pipeline TranslateBy(this Pipeline pipeline, int x, int y)
+        {
+            return pipeline.AddStage(image => image.TranslateBy(x, y));
+        }
+
+        /// <summary>
+        /// Translate image by normalized percentage values.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="xn">X normalized percentage value.</param>
+        /// <param name="yn">Y normalized percentage value.</param>
+        /// <returns>Translated image.</returns>
+        public static Pipeline TranslateInPercentage(this Pipeline pipeline, double xn, double yn)
+        {
+            return pipeline.AddStage(image => 
+                image.TranslateBy(
+                    x: (int)(xn * image.Width), 
+                    y: (int)(yn * image.Height)));
+        }
+
+        #endregion
+
+        #region Blend Layers
+
+        /// <summary>
+        /// Blend with blend layer image from retrieval function.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="imageRetrievalFunction">Image retrieval function.</param>
+        /// <param name="mode">Blend mode when applying the blend layer.</param>
+        /// <returns>Pipeline.</returns>
+        //public static Pipeline BlendWith(this Pipeline pipeline, Func<IImage> imageRetrievalFunction, BlendMode mode = BlendMode.Normal)
+        //{
+        //    return pipeline.AddStage(image => image.BlendWithLayer(imageRetrievalFunction(), mode));
+        //}
 
         #endregion
     }

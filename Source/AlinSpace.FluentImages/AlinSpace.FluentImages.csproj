@@ -13,12 +13,11 @@
     <PackageTags>fluent, images, fluentimages, fluent images, image processing</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.0.1</Version>
+    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Icon.jpg" />
-    <None Remove="Icon.jpg" />
     <None Include="Icon.jpg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

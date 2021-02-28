@@ -90,14 +90,54 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
         }
 
         [Fact]
-        public void Test()
+        public void TranslateBy_1()
         {
             // Act
             Pipeline
                 .New()
-                .ExecuteAndExportToFile(
-                    new Image(File.ReadAllBytes(Constants.TestImagePath)),
-                    "TestTestTest");
+                .TranslateBy(20, 20)
+                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
+                .ExportToFile("Test.TranslateBy.20.20");
         }
+
+        [Fact]
+        public void TranslateInPercentage_1()
+        {
+            // Act
+            Pipeline
+                .New()
+                .TranslateInPercentage(0.5, 0.5)
+                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
+                .ExportToFile("Test.TranslateInPercentage.0.5.0.5");
+        }
+
+        //[Fact]
+        //public void BlendWith_1()
+        //{
+        //    // Act
+        //    Pipeline
+        //        .New()
+        //        .BlendWith(() => new Image(File.ReadAllBytes(Constants.TestImagePath)))
+        //        .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
+        //        .ExportToFile("Test.TranslateInPercentage.0.5.0.5");
+        //}
+
+        //[Fact]
+        //public void Test()
+        //{
+        //    var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+        //    // Act
+        //    Pipeline
+        //        .New()
+        //        .TranslateInPercentage(0.01, 0.01)
+        //        .ExportToFile(
+        //            image,
+        //            "Test.000000.NoBl")
+        //        //.BlendWith(() => image)
+        //        .ExportToFile(
+        //            image,
+        //            "Test.000000.Bl");
+        //}
     }
 }

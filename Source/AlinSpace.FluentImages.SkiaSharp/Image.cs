@@ -77,15 +77,25 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// <returns>New resized image.</returns>
         public IImage ResizeTo(int width, int height)
         {
-            SKBitmap newBitmap = new SKBitmap(width, height);
+            SKBitmap newBitmap = null;
 
-            if (!bitmap.ScalePixels(newBitmap, SKFilterQuality.High))
+            try
             {
-                newBitmap.Dispose();
-                throw new ImageOperationException("SKBitmap.ScalePixels");
-            }
+                newBitmap = new SKBitmap(width, height);
 
-            return new Image(newBitmap);
+                if (!bitmap.ScalePixels(newBitmap, SKFilterQuality.High))
+                {
+                    newBitmap.Dispose();
+                    throw new ImageOperationException("SKBitmap.ScalePixels");
+                }
+
+                return new Image(newBitmap);
+            }
+            catch(Exception)
+            {
+                newBitmap?.Dispose();
+                throw;
+            }
         }
 
         /// <summary>
@@ -162,5 +172,66 @@ namespace AlinSpace.FluentImages.SkiaSharp
                 throw;
             }
         }
+
+        /// <summary>
+        /// Translate image by pixel offset.
+        /// </summary>
+        /// <param name="x">X coordinate pixel offset.</param>
+        /// <param name="y">Y coordinate pixel offset.</param>
+        /// <returns></returns>
+        public IImage TranslateBy(int x, int y)
+        {
+            SKBitmap newBitmap = null;
+
+            try
+            {
+                newBitmap = new SKBitmap(bitmap.Width, bitmap.Height);
+
+                using (SKCanvas canvas = new SKCanvas(newBitmap))
+                {
+                    canvas.Translate(x, y);
+                    canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
+                }
+
+                return new Image(newBitmap);
+            }
+            catch (Exception)
+            {
+                newBitmap?.Dispose();
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Apply blend layer.
+        /// </summary>
+        /// <param name="layer">Image blend layer.</param>
+        /// <param name="mode">Blending mode to use when applying the blend layer.</param>
+        /// <returns>Image created by applying the blend layer with the given blending mode.</returns>
+        //public IImage BlendWithLayer(IImage layer, BlendMode mode = BlendMode.Normal)
+        //{
+        //    SKBitmap newBitmap = null;
+
+        //    try
+        //    {
+        //        newBitmap = new SKBitmap(bitmap.Width, bitmap.Height);
+
+        //        using (SKCanvas canvas = new SKCanvas(newBitmap))
+        //        {
+        //            using (SKPaint paint = new SKPaint())
+        //            {
+        //                paint.BlendMode = SKBlendMode.Modulate;
+        //                canvas.DrawBitmap(bitmap, 0.0f, 0.0f, paint);
+        //            }
+        //        }
+
+        //        return new Image(newBitmap);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        newBitmap?.Dispose();
+        //        throw;
+        //    }
+        //}
     }
 }

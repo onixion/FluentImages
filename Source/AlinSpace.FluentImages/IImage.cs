@@ -54,5 +54,21 @@ namespace AlinSpace.FluentImages
         /// <param name="y">Y coordinate of the rotation point.</param>
         /// <returns>Rotated image.</returns>
         IImage RotateInDegrees(double degrees, double x, double y);
+
+        /// <summary>
+        /// Translate image by pixel offset.
+        /// </summary>
+        /// <param name="x">X coordinate pixel offset.</param>
+        /// <param name="y">Y coordinate pixel offset.</param>
+        /// <returns></returns>
+        IImage TranslateBy(int x, int y);
+
+        /// <summary>
+        /// Apply blend layer.
+        /// </summary>
+        /// <param name="layer">Image blend layer.</param>
+        /// <param name="mode">Blending mode to use when applying the blend layer.</param>
+        /// <returns></returns>
+        //IImage BlendWithLayer(IImage layer, BlendMode mode = BlendMode.Normal);
     }
 }

@@ -9,5 +9,10 @@
         /// Test image path.
         /// </summary>
         public const string TestImagePath = "TestImage.jpg";
+
+        /// <summary>
+        /// Test image icon path.
+        /// </summary>
+        public const string TestImageIconPath = "TestImageIcon.jpg";
     }
 }

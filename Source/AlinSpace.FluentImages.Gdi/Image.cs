@@ -187,8 +187,43 @@ namespace AlinSpace.FluentImages.Gdi
         /// <returns>Flipped image.</returns>
         public IImage Flip(FlipDirection direction)
         {
-            bitmap.RotateFlip(direction.ToRotateFlipType());
-            return this;
+            Bitmap newBitmap = null;
+
+            try
+            {
+                newBitmap = new Bitmap(Width, Height);
+                newBitmap.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
+
+                using (var graphics = Graphics.FromImage(newBitmap))
+                {
+                    graphics.CompositingMode = CompositingMode.SourceCopy;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                    using var wrapMode = new ImageAttributes();
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+
+                   
+                    //graphics.DrawImage(
+                    //    image: bitmap,
+                    //    //destRect: rectangle.ToRectangle(),
+                    //    srcX: 0,
+                    //    srcY: 0,
+                    //    srcWidth: bitmap.Width,
+                    //    srcHeight: bitmap.Height,
+                    //    srcUnit: GraphicsUnit.Pixel,
+                    //    imageAttr: wrapMode);
+                }
+
+                return new Image(newBitmap);
+            }
+            catch (Exception)
+            {
+                newBitmap?.Dispose();
+                throw;
+            }
         }
 
         /// <summary>
@@ -200,7 +235,46 @@ namespace AlinSpace.FluentImages.Gdi
         /// <returns>Rotated image.</returns>
         public IImage RotateInDegrees(double degrees, double x, double y)
         {
-            throw new NotImplementedException();
+            Bitmap newBitmap = null;
+
+            try
+            {
+                newBitmap = new Bitmap(Width, Height);
+                newBitmap.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
+
+                using (var graphics = Graphics.FromImage(newBitmap))
+                {
+                    graphics.CompositingMode = CompositingMode.SourceCopy;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                    using var wrapMode = new ImageAttributes();
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+
+                    graphics.TranslateTransform((float)x, (float)y);
+                    graphics.RotateTransform((float)degrees);
+                    graphics.TranslateTransform((float)-x, (float)-y);
+
+                    graphics.DrawImage(
+                        image: bitmap,
+                        destRect: new System.Drawing.Rectangle(0, 0, Width, Height),
+                        srcX: 0,
+                        srcY: 0,
+                        srcWidth: bitmap.Width,
+                        srcHeight: bitmap.Height,
+                        srcUnit: GraphicsUnit.Pixel,
+                        imageAttr: wrapMode);
+                }
+
+                return new Image(newBitmap);
+            }
+            catch (Exception)
+            {
+                newBitmap?.Dispose();
+                throw;
+            }
         }
     }
 }

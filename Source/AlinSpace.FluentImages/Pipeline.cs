@@ -24,10 +24,34 @@ namespace AlinSpace.FluentImages
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <remarks>
+        /// Copies the functions at the time of running this constructor.
+        /// </remarks>
+        public static Pipeline New(Pipeline pipeline)
+        {
+            return new Pipeline(pipeline);
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         /// <param name="functions">Enumerable of pipeline functions.</param>
         public Pipeline(IEnumerable<PipelineFunction> functions = null)
         {
             this.functions = functions?.ToList() ?? new List<PipelineFunction>();
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <remarks>
+        /// Copies the functions at the time of running this constructor.
+        /// </remarks>
+        public Pipeline(Pipeline pipeline)
+        {
+            functions = pipeline.functions.ToArray();
         }
 
         /// <summary>

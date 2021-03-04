@@ -66,11 +66,10 @@ namespace AlinSpace.FluentImages
         /// <returns>Raw byte array data.</returns>
         public static byte[] ExportToByteArray(this IImage image, Format format = Format.Jpg, Quality quality = Quality.Best)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                image.ExportToStream(memoryStream, format, quality);
-                return memoryStream.ToArray();
-            }
+            using var memoryStream = new MemoryStream();
+            
+            image.ExportToStream(memoryStream, format, quality);
+            return memoryStream.ToArray();
         }
     }
 }

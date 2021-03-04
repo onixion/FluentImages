@@ -1,25 +1,27 @@
-﻿using SkiaSharp;
-using System;
+﻿using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 
-namespace AlinSpace.FluentImages.SkiaSharp
+namespace AlinSpace.FluentImages.Gdi
 {
     /// <summary>
     /// Image implementation for SkiaSharp.
     /// </summary>
     public class Image : IImage
     {
-        readonly SKBitmap bitmap;
+        readonly System.Drawing.Image image;
 
         /// <summary>
         /// Width of image.
         /// </summary>
-        public int Width => bitmap.Width;
+        public int Width => image.Width;
 
         /// <summary>
         /// Height of image.
         /// </summary>
-        public int Height => bitmap.Height;
+        public int Height => image.Height;
 
         /// <summary>
         /// Constructor.
@@ -27,16 +29,19 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// <param name="stream">Stream.</param>
         public Image(Stream stream)
         {
-            bitmap = SKBitmap.Decode(stream);
+            image = System.Drawing.Image.FromStream(stream);
         }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="rawImageData">Raw image data.</param>
-        public Image(byte[] rawImageData)
+        /// <param name="rawBytes">Image as raw bytes.</param>
+        public Image(byte[] rawBytes)
         {
-            bitmap = SKBitmap.Decode(rawImageData);
+            using (var stream = new MemoryStream(rawBytes))
+            {
+                image = System.Drawing.Image.FromStream(stream);
+            }
         }
 
         /// <summary>
@@ -45,16 +50,16 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// <param name="image">Image.</param>
         public Image(Image image)
         {
-            bitmap = image.bitmap.Copy();
+            this.image = (System.Drawing.Image)image.image.Clone();
         }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="bitmap">Bitmap.</param>
-        private Image(SKBitmap bitmap)
+        /// <param name="bitmap">SKBitmap.</param>
+        private Image(System.Drawing.Image image)
         {
-            this.bitmap = bitmap;
+            this.image = (System.Drawing.Image)image.Clone();
         }
 
         /// <summary>
@@ -62,18 +67,7 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// </summary>
         public void Dispose()
         {
-            bitmap.Dispose();
-        }
-
-        /// <summary>
-        /// Export image to raw byte array.
-        /// </summary>
-        /// <param name="format">Format to encode the image to.</param>
-        /// <param name="quality">Quality.</param>
-        /// <returns>Byte array.</returns>
-        public byte[] Export(Format format, Quality quality = Quality.Best)
-        {
-            return bitmap.Encode(format.ToSkiaFormat(), quality.ToSkiaQuality()).ToArray();
+            image.Dispose();
         }
 
         /// <summary>
@@ -94,11 +88,8 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// <returns>Byte array.</returns>
         public void ExportToStream(Stream stream, Format format, Quality quality)
         {
-            
-
-            //bitmap.Encode()
-
-            bitmap.Encode(stream, format.ToSkiaFormat(), quality.ToSkiaQuality());
+            // TODO add quality.
+            image.Save(stream, format.ToGdiFormat());
         }
 
         /// <summary>
@@ -109,15 +100,40 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// <returns>New resized image.</returns>
         public IImage ResizeTo(int width, int height)
         {
-            SKBitmap newBitmap = new SKBitmap(width, height);
-
-            if (!bitmap.ScalePixels(newBitmap, SKFilterQuality.High))
+            try
             {
-                newBitmap.Dispose();
-                throw new ImageOperationException("SKBitmap.ScalePixels");
-            }
+                var destImage = new Bitmap(width, height);
 
-            return new Image(newBitmap);
+                destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+                using (var graphics = Graphics.FromImage(destImage))
+                {
+                    graphics.CompositingMode = CompositingMode.SourceCopy;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                    using var wrapMode = new ImageAttributes();
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+
+                    graphics.DrawImage(
+                        image: image,
+                        destRect: new Rectangle(0, 0, width, height),
+                        srcX: 0,
+                        srcY: 0,
+                        srcWidth: image.Width,
+                        srcHeight: image.Height,
+                        srcUnit: GraphicsUnit.Pixel,
+                        imageAttr: wrapMode);
+                }
+
+                return new Image(destImage);
+            }
+            catch (Exception e)
+            {
+                throw new ImageOperationException("ResizeTo", e);
+            }
         }
 
         /// <summary>
@@ -127,34 +143,11 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// <returns>Flipped image.</returns>
         public IImage Flip(FlipDirection direction)
         {
-            var sx = 1.0f;
-            var sy = 1.0f;
-            var px = 0.0f;
-            var py = 0.0f;
-
-            if (direction == FlipDirection.Horizontal || direction == FlipDirection.Both)
-            {
-                sx = -1.0f;
-                px = bitmap.Width / 2.0f;
-            }
-
-            if (direction == FlipDirection.Vertical || direction == FlipDirection.Both)
-            {
-                sy = -1.0f;
-                py = bitmap.Height / 2.0f;
-            }
-
-            using (SKCanvas canvas = new SKCanvas(bitmap))
-            {
-                canvas.Scale(sx, sy, px, py);
-                canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
-            }
-
-            return this;
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Rotate image by degree.
+        /// Rotate image in degrees.
         /// </summary>
         /// <param name="degrees">Degrees to rotate.</param>
         /// <param name="x">X coordinate of the rotation point.</param>
@@ -162,13 +155,7 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// <returns>Rotated image.</returns>
         public IImage RotateInDegrees(double degrees, double x, double y)
         {
-            using (SKCanvas canvas = new SKCanvas(bitmap))
-            {
-                canvas.RotateDegrees((float)degrees, (float)x, (float)y);
-                canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
-            }
-
-            return this;
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -176,16 +163,10 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// </summary>
         /// <param name="x">X coordinate pixel offset.</param>
         /// <param name="y">Y coordinate pixel offset.</param>
-        /// <returns></returns>
+        /// <returns>Translated image.</returns>
         public IImage TranslateBy(int x, int y)
         {
-            using (SKCanvas canvas = new SKCanvas(bitmap))
-            {
-                canvas.Translate(x, y);
-                canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
-            }
-
-            return this;
+            throw new NotImplementedException();
         }
     }
 }

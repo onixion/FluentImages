@@ -1,7 +1,7 @@
 ﻿namespace AlinSpace.FluentImages
 {
     /// <summary>
-    /// Quality enum.
+    /// Quality.
     /// </summary>
     public enum Quality
     {
@@ -11,8 +11,13 @@
         Best,
 
         /// <summary>
+        /// Moderate,
+        /// </summary>
+        //Moderate,
+
+        /// <summary>
         ///  Lowest quality.
         /// </summary>
-        Lowest,
+        //Lowest,
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace AlinSpace.FluentImages
 {
@@ -18,18 +19,19 @@ namespace AlinSpace.FluentImages
         int Height { get; }
 
         /// <summary>
-        /// Import image from raw byte array.
+        /// Clone the image.
         /// </summary>
-        /// <param name="rawBytes">Image as raw byte array.</param>
-        void Import(byte[] rawBytes);
+        /// <returns>Cloned image.</returns>
+        IImage Clone();
 
         /// <summary>
-        /// Export image to raw byte array.
+        /// Export image to stream.
         /// </summary>
-        /// <param name="format">Format to encode the image to.</param>
-        /// <param name="quality">Quality.</param>
+        /// <param name="stream">Stream to export the image to..</param>
+        /// <param name="format">Format for the encoding.</param>
+        /// <param name="quality">Quality hint.</param>
         /// <returns>Byte array.</returns>
-        byte[] Export(Format format, Quality quality = Quality.Best);
+        void ExportToStream(Stream stream, Format format, Quality quality);
 
         /// <summary>
         /// Resize image to a specific size.
@@ -60,7 +62,7 @@ namespace AlinSpace.FluentImages
         /// </summary>
         /// <param name="x">X coordinate pixel offset.</param>
         /// <param name="y">Y coordinate pixel offset.</param>
-        /// <returns></returns>
+        /// <returns>Translated image.</returns>
         IImage TranslateBy(int x, int y);
 
         /// <summary>

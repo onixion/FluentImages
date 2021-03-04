@@ -14,10 +14,10 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .ResizeTo(400, 300)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Test.ResizeTo");
+                .ExportToFile("Tests.SkiaSharp.ResizeTo_1.jpg");
 
             // Assert
-            var image = new Image(File.ReadAllBytes("Test.ResizeTo.jpg"));
+            var image = new Image(File.ReadAllBytes("Tests.SkiaSharp.ResizeTo_1.jpg"));
 
             Assert.Equal(400, image.Width);
             Assert.Equal(300, image.Height);
@@ -31,7 +31,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .Flip(FlipDirection.Horizontal)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Test.Flip.Horizontal");
+                .ExportToFile("Tests.SkiaSharp.Flip_1.jpg");
 
         }
         [Fact]
@@ -42,7 +42,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .Flip(FlipDirection.Vertical)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Test.Flip.Vertical");
+                .ExportToFile("Tests.SkiaSharp.Flip_2.jpg");
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .Flip(FlipDirection.Both)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Test.Flip.Both");
+                .ExportToFile("Tests.SkiaSharp.Flip_3.jpg");
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .RotateInDegrees(45)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Test.RotateInDegrees.45");
+                .ExportToFile("Tests.SkiaSharp.RotateInDegrees_1.jpg");
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .RotateInPercentage(0.25)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Test.RotateInPercentage.0.25");
+                .ExportToFile("Tests.SkiaSharp.RotateInPercentage_1.jpg");
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .RotateInPercentage(-0.25)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Test.RotateInPercentage.-0.25");
+                .ExportToFile("Tests.SkiaSharp.RotateInPercentage_2.jpg");
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .TranslateBy(20, 20)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Test.TranslateBy.20.20");
+                .ExportToFile("Tests.SkiaSharp.TranslateBy_1.jpg");
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .TranslateInPercentage(0.5, 0.5)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Test.TranslateInPercentage.0.5.0.5");
+                .ExportToFile("Tests.SkiaSharp.TranslateInPercentage_1.jpg");
         }
 
         //[Fact]

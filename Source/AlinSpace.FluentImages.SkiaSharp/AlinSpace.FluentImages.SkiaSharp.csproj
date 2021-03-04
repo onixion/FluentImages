@@ -25,8 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AlinSpace.FluentImages" Version="1.0.3" />
     <PackageReference Include="SkiaSharp" Version="2.80.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AlinSpace.FluentImages\AlinSpace.FluentImages.csproj" />
   </ItemGroup>
 
 </Project>

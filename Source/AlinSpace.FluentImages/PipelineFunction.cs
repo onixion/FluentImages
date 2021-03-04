@@ -1,9 +1,9 @@
 ﻿namespace AlinSpace.FluentImages
 {
     /// <summary>
-    /// Pipeline stage function.
+    /// Pipeline1 function.
     /// </summary>
     /// <param name="inputImage">Input image.</param>
     /// <returns>Output image.</returns>
-    public delegate IImage PipelineStageFunction(IImage inputImage);
+    public delegate IImage PipelineFunction(IImage inputImage);
 }

@@ -30,36 +30,47 @@ namespace AlinSpace.FluentImages
         /// </remarks>
         public static void ExportToFile(this IImage image, string path, Format format = Format.Jpg, Quality quality = Quality.Best)
         {
-            var rawBytes = image.Export(format, quality);
-
+            // If path has no extension.
             if (!Path.HasExtension(path))
             {
                 path = $"{path}.{format.ToFileExtension()}";
             }
+            // Path has extension.
             else
             {
+                // Get extension.
                 var extension = Path.GetExtension(path).Skip(1).ToArray().ToString();
 
+                // Check if the format and the extension are compatible.
                 if (!format.CompatibleWithFileExtension(extension))
                 {
+                    // If not add the extension for the given format
+                    // at the end of the path.
                     path = $"{path}.{format.ToFileExtension()}";
                 }
             }
 
-            File.WriteAllBytes(path, rawBytes);
+            // Open file stream.
+            using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Write);
+
+            // Export image to stream.
+            image.ExportToStream(fileStream, format, quality);
         }
 
         /// <summary>
-        /// Export image to file.
+        /// Export image to raw byte array.
         /// </summary>
         /// <param name="image">Image to export.</param>
-        /// <param name="stream">Stream to export to.</param>
         /// <param name="format">Image format for encoding.</param>
         /// <param name="quality">Image quality to use.</param>
-        public static void ExportToStream(this IImage image, Stream stream, Format format = Format.Jpg, Quality quality = Quality.Best)
+        /// <returns>Raw byte array data.</returns>
+        public static byte[] ExportToByteArray(this IImage image, Format format = Format.Jpg, Quality quality = Quality.Best)
         {
-            var rawBytes = image.Export(format, quality);
-            stream.Write(rawBytes, 0, rawBytes.Length);
+            using (var memoryStream = new MemoryStream())
+            {
+                image.ExportToStream(memoryStream, format, quality);
+                return memoryStream.ToArray();
+            }
         }
     }
 }

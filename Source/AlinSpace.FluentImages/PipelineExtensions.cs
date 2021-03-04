@@ -39,7 +39,7 @@ namespace AlinSpace.FluentImages
         /// <returns>New resized image.</returns>
         public static Pipeline ResizeTo(this Pipeline pipeline, int width, int height)
         {
-            pipeline.AddStage(image => image.ResizeTo(width, height));
+            pipeline.AddFunction(image => image.ResizeTo(width, height));
             return pipeline;
         }
 
@@ -52,7 +52,7 @@ namespace AlinSpace.FluentImages
         /// <returns>New resized image.</returns>
         public static Pipeline ResizeInPercentage(this Pipeline pipeline, double widthNormalized, double heigthNormalized)
         {
-            pipeline.AddStage(image => 
+            pipeline.AddFunction(image => 
                 image.ResizeTo(
                     width: (int)(image.Width * widthNormalized), 
                     height: (int)(image.Height * heigthNormalized)));
@@ -68,7 +68,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline ResizeToWidth(this Pipeline pipeline, int width)
         {
-            return pipeline.AddStage(image =>
+            return pipeline.AddFunction(image =>
             {
                 var newHeight = (int)(width / image.GetAspectRatio());
                 return image.ResizeTo(width, newHeight);
@@ -83,7 +83,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline ResizeToHeight(this Pipeline pipeline, int height)
         {
-            return pipeline.AddStage(image =>
+            return pipeline.AddFunction(image =>
             {
                 var newWidth = (int)(image.GetAspectRatio() * height);
                 return image.ResizeTo(newWidth, height);
@@ -98,7 +98,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline ResizeToWidthScaled(this Pipeline pipeline, double widthFactor)
         {
-            return pipeline.AddStage(image =>
+            return pipeline.AddFunction(image =>
             {
                 var newWidth = (image.Width * widthFactor);
                 var newHeight = newWidth / image.GetAspectRatio();
@@ -115,7 +115,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline ResizeToHeightScaled(this Pipeline pipeline, double heightFactor)
         {
-            return pipeline.AddStage(image =>
+            return pipeline.AddFunction(image =>
             {
                 var newHeight = (image.Height * heightFactor);
                 var newWidth = newHeight * image.GetAspectRatio();
@@ -136,7 +136,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline Flip(this Pipeline pipeline, FlipDirection direction)
         {
-            return pipeline.AddStage(image => image.Flip(direction));
+            return pipeline.AddFunction(image => image.Flip(direction));
         }
 
         #endregion
@@ -153,7 +153,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline RotateInDegrees(this Pipeline pipeline, double degrees, double x, double y)
         {
-            return pipeline.AddStage(image => image.RotateInDegrees(degrees, x, y));
+            return pipeline.AddFunction(image => image.RotateInDegrees(degrees, x, y));
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline RotateInDegrees(this Pipeline pipeline, double degrees)
         {
-            return pipeline.AddStage(image => 
+            return pipeline.AddFunction(image => 
                 image.RotateInDegrees(
                     degrees: degrees, 
                     x: image.Width / 2.0f,
@@ -181,7 +181,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline RotateInPercentage(this Pipeline pipeline, double factor, double x, double y)
         {
-            return pipeline.AddStage(image => 
+            return pipeline.AddFunction(image => 
                 image.RotateInDegrees(
                     degrees: factor * 360.0, 
                     x: x, 
@@ -196,7 +196,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline RotateInPercentage(this Pipeline pipeline, double factor)
         {
-            return pipeline.AddStage(image =>
+            return pipeline.AddFunction(image =>
                 image.RotateInDegrees(
                     degrees: factor * 360.0,
                     x: image.Width / 2.0f,
@@ -216,7 +216,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Translated image.</returns>
         public static Pipeline TranslateBy(this Pipeline pipeline, int x, int y)
         {
-            return pipeline.AddStage(image => image.TranslateBy(x, y));
+            return pipeline.AddFunction(image => image.TranslateBy(x, y));
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Translated image.</returns>
         public static Pipeline TranslateInPercentage(this Pipeline pipeline, double xn, double yn)
         {
-            return pipeline.AddStage(image => 
+            return pipeline.AddFunction(image => 
                 image.TranslateBy(
                     x: (int)(xn * image.Width), 
                     y: (int)(yn * image.Height)));

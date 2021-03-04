@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlinSpace.FluentImages.Skia
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlinSpace.FluentImages.Tests", "AlinSpace.FluentImages.Tests\AlinSpace.FluentImages.Tests.csproj", "{8BC0980A-6715-4EDD-A8F9-5FEE9C054777}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlinSpace.FluentImages.Gdi", "AlinSpace.FluentImages.Gdi\AlinSpace.FluentImages.Gdi.csproj", "{BF9CFC99-EA40-49B1-B8F2-964B283D0376}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlinSpace.FluentImages.Magick", "AlinSpace.FluentImages.ImageMagick\AlinSpace.FluentImages.Magick.csproj", "{8CFABAE0-A785-440E-B7BA-58624F018FC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{8BC0980A-6715-4EDD-A8F9-5FEE9C054777}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BC0980A-6715-4EDD-A8F9-5FEE9C054777}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BC0980A-6715-4EDD-A8F9-5FEE9C054777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF9CFC99-EA40-49B1-B8F2-964B283D0376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF9CFC99-EA40-49B1-B8F2-964B283D0376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF9CFC99-EA40-49B1-B8F2-964B283D0376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF9CFC99-EA40-49B1-B8F2-964B283D0376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CFABAE0-A785-440E-B7BA-58624F018FC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFABAE0-A785-440E-B7BA-58624F018FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CFABAE0-A785-440E-B7BA-58624F018FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CFABAE0-A785-440E-B7BA-58624F018FC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

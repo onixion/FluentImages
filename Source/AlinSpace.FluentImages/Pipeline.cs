@@ -68,16 +68,24 @@ namespace AlinSpace.FluentImages
 
             foreach(var function in functions)
             {
-                var tempImage = function(currentImage);
-
-                // If the pipeline function created a new output image,
-                // dispose the input image.
-                if (!ReferenceEquals(image, currentImage))
+                try
                 {
-                    currentImage.Dispose();
-                }
+                    var tempImage = function(currentImage);
 
-                currentImage = tempImage;
+                    // If the pipeline function created a new output image,
+                    // dispose the input image.
+                    if (!ReferenceEquals(tempImage, currentImage))
+                    {
+                        currentImage.Dispose();
+                    }
+
+                    currentImage = tempImage;
+                }
+                catch(Exception e)
+                {
+                    // TODO
+                    throw;
+                }
             }
 
             return currentImage;

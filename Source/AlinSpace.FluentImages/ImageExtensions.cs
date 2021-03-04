@@ -39,7 +39,7 @@ namespace AlinSpace.FluentImages
             else
             {
                 // Get extension.
-                var extension = Path.GetExtension(path).Skip(1).ToArray().ToString();
+                var extension = new string(Path.GetExtension(path).Skip(1).ToArray());
 
                 // Check if the format and the extension are compatible.
                 if (!format.CompatibleWithFileExtension(extension))

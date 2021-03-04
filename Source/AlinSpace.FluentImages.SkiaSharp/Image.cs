@@ -66,17 +66,6 @@ namespace AlinSpace.FluentImages.SkiaSharp
         }
 
         /// <summary>
-        /// Export image to raw byte array.
-        /// </summary>
-        /// <param name="format">Format to encode the image to.</param>
-        /// <param name="quality">Quality.</param>
-        /// <returns>Byte array.</returns>
-        public byte[] Export(Format format, Quality quality = Quality.Best)
-        {
-            return bitmap.Encode(format.ToSkiaFormat(), quality.ToSkiaQuality()).ToArray();
-        }
-
-        /// <summary>
         /// Clone the image.
         /// </summary>
         /// <returns>Cloned image.</returns>
@@ -94,10 +83,6 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// <returns>Byte array.</returns>
         public void ExportToStream(Stream stream, Format format, Quality quality)
         {
-            
-
-            //bitmap.Encode()
-
             bitmap.Encode(stream, format.ToSkiaFormat(), quality.ToSkiaQuality());
         }
 
@@ -121,12 +106,31 @@ namespace AlinSpace.FluentImages.SkiaSharp
         }
 
         /// <summary>
+        /// Map image to rectangle area.
+        /// </summary>
+        /// <param name="rectangle">Rectangle.</param>
+        /// <returns>Mapped image.</returns>
+        public IImage MapTo(Rectangle rectangle)
+        {
+            SKBitmap newBitmap = new SKBitmap(Width, Height);
+
+            using (SKCanvas canvas = new SKCanvas(newBitmap))
+            {
+                canvas.DrawBitmap(bitmap, rectangle.ToSKRectangle());
+            }
+
+            return new Image(newBitmap);
+        }
+
+        /// <summary>
         /// Flip image.
         /// </summary>
         /// <param name="direction">Flip direction.</param>
         /// <returns>Flipped image.</returns>
         public IImage Flip(FlipDirection direction)
         {
+            SKBitmap newBitmap = new SKBitmap(Width, Height);
+
             var sx = 1.0f;
             var sy = 1.0f;
             var px = 0.0f;
@@ -144,13 +148,13 @@ namespace AlinSpace.FluentImages.SkiaSharp
                 py = bitmap.Height / 2.0f;
             }
 
-            using (SKCanvas canvas = new SKCanvas(bitmap))
+            using (SKCanvas canvas = new SKCanvas(newBitmap))
             {
                 canvas.Scale(sx, sy, px, py);
                 canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
             }
 
-            return this;
+            return new Image(newBitmap);
         }
 
         /// <summary>
@@ -162,30 +166,16 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// <returns>Rotated image.</returns>
         public IImage RotateInDegrees(double degrees, double x, double y)
         {
-            using (SKCanvas canvas = new SKCanvas(bitmap))
+            SKBitmap newBitmap = new SKBitmap(Width, Height);
+
+            using (SKCanvas canvas = new SKCanvas(newBitmap))
             {
+                canvas.Clear();
                 canvas.RotateDegrees((float)degrees, (float)x, (float)y);
                 canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
             }
 
-            return this;
-        }
-
-        /// <summary>
-        /// Translate image by pixel offset.
-        /// </summary>
-        /// <param name="x">X coordinate pixel offset.</param>
-        /// <param name="y">Y coordinate pixel offset.</param>
-        /// <returns></returns>
-        public IImage TranslateBy(int x, int y)
-        {
-            using (SKCanvas canvas = new SKCanvas(bitmap))
-            {
-                canvas.Translate(x, y);
-                canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
-            }
-
-            return this;
+            return new Image(newBitmap);
         }
     }
 }

@@ -42,6 +42,13 @@ namespace AlinSpace.FluentImages
         IImage ResizeTo(int width, int height);
 
         /// <summary>
+        /// Map image to rectangle area.
+        /// </summary>
+        /// <param name="rectangle">Rectangle.</param>
+        /// <returns>Mapped image.</returns>
+        IImage MapTo(Rectangle rectangle);
+
+        /// <summary>
         /// Flip image.
         /// </summary>
         /// <param name="direction">Flip direction.</param>
@@ -56,14 +63,6 @@ namespace AlinSpace.FluentImages
         /// <param name="y">Y coordinate of the rotation point.</param>
         /// <returns>Rotated image.</returns>
         IImage RotateInDegrees(double degrees, double x, double y);
-
-        /// <summary>
-        /// Translate image by pixel offset.
-        /// </summary>
-        /// <param name="x">X coordinate pixel offset.</param>
-        /// <param name="y">Y coordinate pixel offset.</param>
-        /// <returns>Translated image.</returns>
-        IImage TranslateBy(int x, int y);
 
         /// <summary>
         /// Apply blend layer.

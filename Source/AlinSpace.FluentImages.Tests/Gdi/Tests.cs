@@ -1,8 +1,8 @@
-﻿using AlinSpace.FluentImages.SkiaSharp;
+﻿using AlinSpace.FluentImages.Gdi;
 using System.IO;
 using Xunit;
 
-namespace AlinSpace.FluentImages.Tests.Skiasharp
+namespace AlinSpace.FluentImages.Tests.Gdi
 {
     public class Tests
     {
@@ -14,7 +14,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .ResizeTo(400, 300)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.ResizeTo_1.jpg");
+                .ExportToFile("Tests.Gdi.ResizeTo_1.jpg");
 
             // Assert
             //var image = new Image(File.ReadAllBytes("Tests.SkiaSharp.ResizeTo_1.jpg"));
@@ -31,9 +31,9 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .Flip(FlipDirection.Horizontal)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.Flip_1.jpg");
-
+                .ExportToFile("Tests.Gdi.Flip_1.jpg");
         }
+
         [Fact]
         public void Flip_2()
         {
@@ -42,7 +42,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .Flip(FlipDirection.Vertical)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.Flip_2.jpg");
+                .ExportToFile("Tests.Gdi.Flip_2.jpg");
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .Flip(FlipDirection.Both)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.Flip_3.jpg");
+                .ExportToFile("Tests.Gdi.Flip_3.jpg");
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .RotateInDegrees(45)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.RotateInDegrees_1.jpg");
+                .ExportToFile("Tests.Gdi.RotateInDegrees_1.jpg");
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .RotateInPercentage(0.25)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.RotateInPercentage_1.jpg");
+                .ExportToFile("Tests.Gdi.RotateInPercentage_1.jpg");
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
                 .New()
                 .RotateInPercentage(-0.25)
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.RotateInPercentage_2.jpg");
+                .ExportToFile("Tests.Gdi.RotateInPercentage_2.jpg");
         }
 
         [Fact]
@@ -95,9 +95,9 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
             // Act
             Pipeline
                 .New()
-                .MapTo(new Rectangle(0, 0, 100, 100))
+                .MapTo(new Rectangle(50, 50, 0, 0))
                 .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.MapTo_1.jpg");
+                .ExportToFile("Tests.Gdi.MapTo_1.jpg");
         }
 
         //[Fact]

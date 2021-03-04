@@ -126,6 +126,22 @@ namespace AlinSpace.FluentImages
 
         #endregion
 
+        #region MapTo
+
+        /// <summary>
+        /// Map image to rectangle area.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="rectangle">Rectangle.</param>
+        /// <returns>Mapped image.</returns>
+        public static Pipeline MapTo(this Pipeline pipeline, Rectangle rectangle)
+        {
+            pipeline.AddFunction(image => image.MapTo(rectangle));
+            return pipeline;
+        }
+
+        #endregion
+
         #region Flip
 
         /// <summary>
@@ -201,37 +217,6 @@ namespace AlinSpace.FluentImages
                     degrees: factor * 360.0,
                     x: image.Width / 2.0f,
                     y: image.Height / 2.0f));
-        }
-
-        #endregion
-
-        #region Translate
-
-        /// <summary>
-        /// Translate image by pixel offset.
-        /// </summary>
-        /// <param name="pipeline">Pipeline.</param>
-        /// <param name="x">X coordinate pixel offset.</param>
-        /// <param name="y">Y coordinate pixel offset.</param>
-        /// <returns>Translated image.</returns>
-        public static Pipeline TranslateBy(this Pipeline pipeline, int x, int y)
-        {
-            return pipeline.AddFunction(image => image.TranslateBy(x, y));
-        }
-
-        /// <summary>
-        /// Translate image by normalized percentage values.
-        /// </summary>
-        /// <param name="pipeline">Pipeline.</param>
-        /// <param name="xn">X normalized percentage value.</param>
-        /// <param name="yn">Y normalized percentage value.</param>
-        /// <returns>Translated image.</returns>
-        public static Pipeline TranslateInPercentage(this Pipeline pipeline, double xn, double yn)
-        {
-            return pipeline.AddFunction(image => 
-                image.TranslateBy(
-                    x: (int)(xn * image.Width), 
-                    y: (int)(yn * image.Height)));
         }
 
         #endregion

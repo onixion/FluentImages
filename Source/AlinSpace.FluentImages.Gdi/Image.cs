@@ -187,43 +187,12 @@ namespace AlinSpace.FluentImages.Gdi
         /// <returns>Flipped image.</returns>
         public IImage Flip(FlipDirection direction)
         {
-            Bitmap newBitmap = null;
+            //var newBitmap = (Bitmap)bitmap.Clone();
+            //newBitmap.RotateFlip(direction.ToRotateFlipType());
 
-            try
-            {
-                newBitmap = new Bitmap(Width, Height);
-                newBitmap.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
+            // TODO
 
-                using (var graphics = Graphics.FromImage(newBitmap))
-                {
-                    graphics.CompositingMode = CompositingMode.SourceCopy;
-                    graphics.CompositingQuality = CompositingQuality.HighQuality;
-                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    graphics.SmoothingMode = SmoothingMode.HighQuality;
-                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                    using var wrapMode = new ImageAttributes();
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-
-                   
-                    //graphics.DrawImage(
-                    //    image: bitmap,
-                    //    //destRect: rectangle.ToRectangle(),
-                    //    srcX: 0,
-                    //    srcY: 0,
-                    //    srcWidth: bitmap.Width,
-                    //    srcHeight: bitmap.Height,
-                    //    srcUnit: GraphicsUnit.Pixel,
-                    //    imageAttr: wrapMode);
-                }
-
-                return new Image(newBitmap);
-            }
-            catch (Exception)
-            {
-                newBitmap?.Dispose();
-                throw;
-            }
+            return this;
         }
 
         /// <summary>
@@ -236,7 +205,7 @@ namespace AlinSpace.FluentImages.Gdi
         public IImage RotateInDegrees(double degrees, double x, double y)
         {
             Bitmap newBitmap = null;
-
+            
             try
             {
                 newBitmap = new Bitmap(Width, Height);
@@ -254,7 +223,7 @@ namespace AlinSpace.FluentImages.Gdi
                     wrapMode.SetWrapMode(WrapMode.TileFlipXY);
 
                     graphics.TranslateTransform((float)x, (float)y);
-                    graphics.RotateTransform((float)degrees);
+                    graphics.RotateTransform((float)(degrees.ToPositive()));
                     graphics.TranslateTransform((float)-x, (float)-y);
 
                     graphics.DrawImage(

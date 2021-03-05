@@ -8,4 +8,8 @@
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.23.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AlinSpace.FluentImages\AlinSpace.FluentImages.csproj" />
+  </ItemGroup>
+
 </Project>

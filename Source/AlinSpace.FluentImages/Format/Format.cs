@@ -6,9 +6,9 @@
     public enum Format
     {
         /// <summary>
-        /// JPG format.
+        /// JPEG format.
         /// </summary>
-        Jpg,
+        Jpeg,
 
         /// <summary>
         /// PNG format.

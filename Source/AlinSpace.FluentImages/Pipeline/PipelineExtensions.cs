@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace AlinSpace.FluentImages
 {
@@ -10,19 +11,32 @@ namespace AlinSpace.FluentImages
         #region Export
 
         /// <summary>
-        /// Execute pipeline.
+        /// Execute pipeline and export image to stream.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="image">Image to push through the pipeline.</param>
+        /// <param name="stream">Stream to export to.</param>
+        /// <param name="format">Format to export to.</param>
+        /// <returns>Pipeline.</returns>
+        public static Pipeline ExecuteExportToFile(this Pipeline pipeline, IImage image, Stream stream, Format format = Format.Jpeg)
+        {
+            var outputImage = pipeline.Execute(image);
+            outputImage.ExportToStream(stream, format);
+            return pipeline;
+        }
+
+        /// <summary>
+        /// Execute pipeline and export image to file.
         /// </summary>
         /// <param name="pipeline">Pipeline.</param>
         /// <param name="image">Image to push through the pipeline.</param>
         /// <param name="path">Path to export the file to.</param>
         /// <param name="format">Format to export to.</param>
-        /// <param name="quality">Quality when exporting.</param>
-        /// <returns>New image created by the pipeline.</returns>
-        public static Pipeline ExportToFile(this Pipeline pipeline, IImage image, string path, Format format = Format.Jpg, Quality quality = Quality.Best)
+        /// <returns>Pipeline.</returns>
+        public static Pipeline ExecuteExportToFile(this Pipeline pipeline, IImage image, string path, Format format = Format.Jpeg)
         {
             var outputImage = pipeline.Execute(image);
-            outputImage.ExportToFile(path, format, quality);
-
+            outputImage.ExportToFile(path, format);
             return pipeline;
         }
 
@@ -52,9 +66,9 @@ namespace AlinSpace.FluentImages
         /// <returns>New resized image.</returns>
         public static Pipeline ResizeInPercentage(this Pipeline pipeline, double widthNormalized, double heigthNormalized)
         {
-            pipeline.AddFunction(image => 
+            pipeline.AddFunction(image =>
                 image.ResizeTo(
-                    width: (int)(image.Width * widthNormalized), 
+                    width: (int)(image.Width * widthNormalized),
                     height: (int)(image.Height * heigthNormalized)));
 
             return pipeline;
@@ -126,18 +140,32 @@ namespace AlinSpace.FluentImages
 
         #endregion
 
+        #region Transform
+
+        /// <summary>
+        /// Resize image to a specific size.
+        /// </summary>
+        /// <param name="pipeline">Pipeline.</param>
+        /// <param name="transformFunction">Transform function.</param>
+        /// <returns>Pipeline.</returns>
+        public static Pipeline Transform(this Pipeline pipeline, Action<IImageTransform> transformFunction)
+        {
+            return pipeline.AddFunction(image => image.Transform(transformFunction));
+        }
+
         #region MapTo
 
         /// <summary>
         /// Map image to rectangle area.
         /// </summary>
         /// <param name="pipeline">Pipeline.</param>
-        /// <param name="rectangle">Rectangle.</param>
-        /// <returns>Mapped image.</returns>
+        /// <param name="rectangle">Area to map to.</param>
+        /// <returns>Pipeline.</returns>
         public static Pipeline MapTo(this Pipeline pipeline, Rectangle rectangle)
         {
-            pipeline.AddFunction(image => image.MapTo(rectangle));
-            return pipeline;
+            return pipeline.AddFunction(
+                image => image.Transform(
+                    transform => transform.MapTo(rectangle)));
         }
 
         #endregion
@@ -152,7 +180,9 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline Flip(this Pipeline pipeline, FlipDirection direction)
         {
-            return pipeline.AddFunction(image => image.Flip(direction));
+            return pipeline.AddFunction(
+                image => image.Transform(
+                    transform => transform.Flip(direction)));
         }
 
         #endregion
@@ -167,9 +197,9 @@ namespace AlinSpace.FluentImages
         /// <param name="x">X coordinate of the rotation point.</param>
         /// <param name="y">Y coordinate of the rotation point.</param>
         /// <returns>Pipeline.</returns>
-        public static Pipeline RotateInDegrees(this Pipeline pipeline, double degrees, double x, double y)
+        public static Pipeline RotateInDegrees(this Pipeline pipeline, double degrees, int x, int y)
         {
-            return pipeline.AddFunction(image => image.RotateInDegrees(degrees, x, y));
+            return pipeline.AddFunction(image => image.Transform(transform => transform.RotateInDegrees(degrees, x, y)));
         }
 
         /// <summary>
@@ -180,60 +210,34 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline RotateInDegrees(this Pipeline pipeline, double degrees)
         {
-            return pipeline.AddFunction(image => 
-                image.RotateInDegrees(
-                    degrees: degrees, 
-                    x: image.Width / 2.0f,
-                    y: image.Height / 2.0f));
+            return pipeline.AddFunction(image => image.Transform(transform => transform.RotateInDegrees(degrees)));
         }
 
         /// <summary>
         /// Rotate image in percentage.
         /// </summary>
         /// <param name="pipeline">Pipeline.</param>
-        /// <param name="factor">Normalized percentage value.</param>
+        /// <param name="percentage">Percentage to rotate.</param>
         /// <param name="x">X coordinate of the rotation point.</param>
         /// <param name="y">Y coordinate of the rotation point.</param>
         /// <returns>Pipeline.</returns>
-        public static Pipeline RotateInPercentage(this Pipeline pipeline, double factor, double x, double y)
+        public static Pipeline RotateInPercentage(this Pipeline pipeline, double percentage, int x, int y)
         {
-            return pipeline.AddFunction(image => 
-                image.RotateInDegrees(
-                    degrees: factor * 360.0, 
-                    x: x, 
-                    y: y));
+            return pipeline.Transform(t => t.RotateInPercentage(percentage, x, y));
         }
 
         /// <summary>
         /// Rotate image in percentage.
         /// </summary>
         /// <param name="pipeline">Pipeline.</param>
-        /// <param name="factor">Normalized percentage value.</param>
+        /// <param name="percentage">Percentage to rotate.</param>
         /// <returns>Pipeline.</returns>
-        public static Pipeline RotateInPercentage(this Pipeline pipeline, double factor)
+        public static Pipeline RotateInPercentage(this Pipeline pipeline, double percentage)
         {
-            return pipeline.AddFunction(image =>
-                image.RotateInDegrees(
-                    degrees: factor * 360.0,
-                    x: image.Width / 2.0f,
-                    y: image.Height / 2.0f));
+            return pipeline.Transform(t => t.RotateInPercentage(percentage));
         }
 
         #endregion
-
-        #region Blend Layers
-
-        /// <summary>
-        /// Blend with blend layer image from retrieval function.
-        /// </summary>
-        /// <param name="pipeline">Pipeline.</param>
-        /// <param name="imageRetrievalFunction">Image retrieval function.</param>
-        /// <param name="mode">Blend mode when applying the blend layer.</param>
-        /// <returns>Pipeline.</returns>
-        //public static Pipeline BlendWith(this Pipeline pipeline, Func<IImage> imageRetrievalFunction, BlendMode mode = BlendMode.Normal)
-        //{
-        //    return pipeline.AddStage(image => image.BlendWithLayer(imageRetrievalFunction(), mode));
-        //}
 
         #endregion
     }

@@ -29,9 +29,8 @@ namespace AlinSpace.FluentImages
         /// </summary>
         /// <param name="stream">Stream to export the image to..</param>
         /// <param name="format">Format for the encoding.</param>
-        /// <param name="quality">Quality hint.</param>
         /// <returns>Byte array.</returns>
-        void ExportToStream(Stream stream, Format format, Quality quality);
+        void ExportToStream(Stream stream, Format format);
 
         /// <summary>
         /// Resize image to a specific size.
@@ -42,27 +41,11 @@ namespace AlinSpace.FluentImages
         IImage ResizeTo(int width, int height);
 
         /// <summary>
-        /// Map image to rectangle area.
+        /// Transform image.
         /// </summary>
-        /// <param name="rectangle">Rectangle.</param>
-        /// <returns>Mapped image.</returns>
-        IImage MapTo(Rectangle rectangle);
-
-        /// <summary>
-        /// Flip image.
-        /// </summary>
-        /// <param name="direction">Flip direction.</param>
-        /// <returns>Flipped image.</returns>
-        IImage Flip(FlipDirection direction);
-
-        /// <summary>
-        /// Rotate image in degrees.
-        /// </summary>
-        /// <param name="degrees">Degrees to rotate.</param>
-        /// <param name="x">X coordinate of the rotation point.</param>
-        /// <param name="y">Y coordinate of the rotation point.</param>
-        /// <returns>Rotated image.</returns>
-        IImage RotateInDegrees(double degrees, double x, double y);
+        /// <param name="transformFunction">Transform function.</param>
+        /// <returns>Tranformed image.</returns>
+        IImage Transform(Action<IImageTransform> transformFunction);
 
         /// <summary>
         /// Apply blend layer.

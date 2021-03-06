@@ -8,7 +8,7 @@ namespace AlinSpace.FluentImages
     {
         public static double ToPositive(this double degrees)
         {
-            var p = degrees / 360.0;
+            var p = degrees % 360.0;
 
             if (degrees < 0)
             {

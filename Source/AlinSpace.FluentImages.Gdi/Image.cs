@@ -7,7 +7,7 @@ using System.IO;
 namespace AlinSpace.FluentImages.Gdi
 {
     /// <summary>
-    /// Image implementation for SkiaSharp.
+    /// Image implementation for <see cref="System.Drawing.Image"/>.
     /// </summary>
     public class Image : IImage
     {
@@ -82,9 +82,8 @@ namespace AlinSpace.FluentImages.Gdi
         /// </summary>
         /// <param name="stream">Stream to export the image to..</param>
         /// <param name="format">Format for the encoding.</param>
-        /// <param name="quality">Quality hint.</param>
         /// <returns>Byte array.</returns>
-        public void ExportToStream(Stream stream, Format format, Quality quality)
+        public void ExportToStream(Stream stream, Format format)
         {
             bitmap.Save(stream, format.ToGdiFormat());
         }

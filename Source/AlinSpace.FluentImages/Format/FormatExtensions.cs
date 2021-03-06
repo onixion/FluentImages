@@ -22,7 +22,7 @@ namespace AlinSpace.FluentImages
                         return true;
                     break;
 
-                case Format.Jpg:
+                case Format.Jpeg:
                     if (extension.ToLower() == "jpg")
                         return true;
                     if (extension.ToLower() == "jpeg")
@@ -43,7 +43,7 @@ namespace AlinSpace.FluentImages
             return format switch
             {
                 Format.Png => "png",
-                Format.Jpg => "jpg",
+                Format.Jpeg => "jpg",
                 _ => throw new Exception($"Format not supported: {format}"),
             };
         }

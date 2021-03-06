@@ -5,7 +5,7 @@ using System.IO;
 namespace AlinSpace.FluentImages.SkiaSharp
 {
     /// <summary>
-    /// Image implementation for SkiaSharp.
+    /// Image implementation for <see cref="SKBitmap"/>.
     /// </summary>
     public class Image : IImage
     {
@@ -79,11 +79,10 @@ namespace AlinSpace.FluentImages.SkiaSharp
         /// </summary>
         /// <param name="stream">Stream to export the image to..</param>
         /// <param name="format">Format for the encoding.</param>
-        /// <param name="quality">Quality hint.</param>
         /// <returns>Byte array.</returns>
-        public void ExportToStream(Stream stream, Format format, Quality quality)
+        public void ExportToStream(Stream stream, Format format)
         {
-            bitmap.Encode(stream, format.ToSkiaFormat(), quality.ToSkiaQuality());
+            bitmap.Encode(stream, format.ToSkiaFormat(), 100);
         }
 
         /// <summary>
@@ -103,6 +102,19 @@ namespace AlinSpace.FluentImages.SkiaSharp
             }
 
             return new Image(newBitmap);
+        }
+
+        /// <summary>
+        /// Transform image.
+        /// </summary>
+        /// <param name="transformFunction">Transform function.</param>
+        /// <returns>Tranformed image.</returns>
+        public IImage Transform(Action<IImageTransform> transformFunction)
+        {
+            using ImageTransform imageTransform = new ImageTransform(bitmap);
+            transformFunction(imageTransform);
+
+            return new Image(imageTransform.Transform());
         }
 
         /// <summary>

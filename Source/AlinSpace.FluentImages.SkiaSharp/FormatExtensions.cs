@@ -18,7 +18,7 @@ namespace AlinSpace.FluentImages.SkiaSharp
             return format switch
             {
                 Format.Png => SKEncodedImageFormat.Png,
-                Format.Jpg => SKEncodedImageFormat.Jpeg,
+                Format.Jpeg => SKEncodedImageFormat.Jpeg,
                 _ => throw new Exception($"Format not supported: {format}"),
             };
         }

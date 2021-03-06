@@ -9,124 +9,159 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
         [Fact]
         public void ResizeTo_1()
         {
-            // Act
-            Pipeline
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
                 .New()
-                .ResizeTo(400, 300)
-                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.ResizeTo_1.jpg");
+                .ResizeTo(400, 300);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
 
             // Assert
-            //var image = new Image(File.ReadAllBytes("Tests.SkiaSharp.ResizeTo_1.jpg"));
+            Assert.Equal(400, newImage.Width);
+            Assert.Equal(300, newImage.Height);
 
-            //Assert.Equal(400, image.Width);
-            //Assert.Equal(300, image.Height);
+            // Export
+            newImage.ExportToFile("Tests.SkiaSharp.ResizeTo_1.jpg");
         }
 
         [Fact]
-        public void Flip_1()
+        public void Transform_Flip_Both()
         {
-            // Act
-            Pipeline
-                .New()
-                .Flip(FlipDirection.Horizontal)
-                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.Flip_1.jpg");
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
 
-        }
-        [Fact]
-        public void Flip_2()
-        {
-            // Act
-            Pipeline
+            var pipeline = Pipeline
                 .New()
-                .Flip(FlipDirection.Vertical)
-                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.Flip_2.jpg");
+                .Flip(FlipDirection.Both);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile("Tests.SkiaSharp.Transform_Flip_Both.jpg");
         }
 
-        [Fact]
-        public void Flip_3()
-        {
-            // Act
-            Pipeline
-                .New()
-                .Flip(FlipDirection.Both)
-                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.Flip_3.jpg");
-        }
 
         [Fact]
-        public void RotateInDegrees_1()
+        public void Transform_Flip_Horizontal()
         {
-            // Act
-            Pipeline
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
                 .New()
-                .RotateInDegrees(45)
-                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.RotateInDegrees_1.jpg");
+                .Flip(FlipDirection.Horizontal);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile("Tests.SkiaSharp.Transform_Flip_Horizontal.jpg");
         }
 
         [Fact]
-        public void RotateInPercentage_1()
+        public void Transform_Flip_Vertical()
         {
-            // Act
-            Pipeline
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
                 .New()
-                .RotateInPercentage(0.25)
-                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.RotateInPercentage_1.jpg");
+                .Flip(FlipDirection.Vertical);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile("Tests.SkiaSharp.Transform_Flip_Vertical.jpg");
         }
 
         [Fact]
-        public void RotateInPercentage_2()
+        public void Transform_MapTo_1()
         {
-            // Act
-            Pipeline
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
                 .New()
-                .RotateInPercentage(-0.25)
-                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.RotateInPercentage_2.jpg");
+                .MapTo(new Rectangle(200, 200, 400, 400));
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile("Tests.SkiaSharp.Transform_MapTo_1.jpg");
         }
 
         [Fact]
-        public void MapTo_1()
+        public void Transform_MapTo_2()
         {
-            // Act
-            Pipeline
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
                 .New()
-                .MapTo(new Rectangle(0, 0, 100, 100))
-                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-                .ExportToFile("Tests.SkiaSharp.MapTo_1.jpg");
+                .MapTo(new Rectangle(0, 500, 1920, 1080));
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile("Tests.SkiaSharp.Transform_MapTo_2.jpg");
         }
 
-        //[Fact]
-        //public void BlendWith_1()
-        //{
-        //    // Act
-        //    Pipeline
-        //        .New()
-        //        .BlendWith(() => new Image(File.ReadAllBytes(Constants.TestImagePath)))
-        //        .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-        //        .ExportToFile("Test.TranslateInPercentage.0.5.0.5");
-        //}
+        [Fact]
+        public void Transform_RotateInDegrees_1()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
 
-        //[Fact]
-        //public void Test()
-        //{
-        //    var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+            var pipeline = Pipeline
+                .New()
+                .RotateInDegrees(45.0, 0, 0);
 
-        //    // Act
-        //    Pipeline
-        //        .New()
-        //        .TranslateInPercentage(0.01, 0.01)
-        //        .ExportToFile(
-        //            image,
-        //            "Test.000000.NoBl")
-        //        //.BlendWith(() => image)
-        //        .ExportToFile(
-        //            image,
-        //            "Test.000000.Bl");
-        //}
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile("Tests.SkiaSharp.Transform_RotateInDegrees_1.jpg");
+        }
+
+        [Fact]
+        public void Transform_RotateInDegrees_2()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .RotateInDegrees(45.0, 100, 100);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile("Tests.SkiaSharp.Transform_RotateInDegrees_2.jpg");
+        }
+
+        [Fact]
+        public void Transform_RotateInDegrees_3()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .RotateInDegrees(45.0);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile("Tests.SkiaSharp.Transform_RotateInDegrees_3.jpg");
+        }
     }
 }

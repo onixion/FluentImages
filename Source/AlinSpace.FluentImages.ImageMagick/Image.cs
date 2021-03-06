@@ -5,11 +5,11 @@ using System.IO;
 namespace AlinSpace.FluentImages.Magick
 {
     /// <summary>
-    /// Image implementation for SkiaSharp.
+    /// Image implementation for <see cref="IMagickImage{ushort}"/>.
     /// </summary>
     public class Image : IImage
     {
-        readonly MagickImage image;
+        readonly IMagickImage<ushort> image;
 
         /// <summary>
         /// Width of image.
@@ -45,15 +45,16 @@ namespace AlinSpace.FluentImages.Magick
         /// <param name="image">Image.</param>
         public Image(Image image)
         {
-            // TODO
+            this.image = image.image.Clone();
         }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="bitmap">SKBitmap.</param>
-        private Image(MagickImage image)
+        /// <param name="image">Image.</param>
+        private Image(IMagickImage<ushort> image)
         {
+            this.image = image.Clone();
         }
 
         /// <summary>
@@ -78,9 +79,8 @@ namespace AlinSpace.FluentImages.Magick
         /// </summary>
         /// <param name="stream">Stream to export the image to..</param>
         /// <param name="format">Format for the encoding.</param>
-        /// <param name="quality">Quality hint.</param>
         /// <returns>Byte array.</returns>
-        public void ExportToStream(Stream stream, Format format, Quality quality)
+        public void ExportToStream(Stream stream, Format format)
         {
             var data = image.ToByteArray(format.ToMagickFormat());
             stream.Write(data);

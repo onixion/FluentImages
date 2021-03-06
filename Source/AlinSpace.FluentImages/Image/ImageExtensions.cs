@@ -24,11 +24,10 @@ namespace AlinSpace.FluentImages
         /// <param name="image">Image to export.</param>
         /// <param name="path">Path to the file.</param>
         /// <param name="format">Image format for encoding.</param>
-        /// <param name="quality">Image quality to use.</param>
         /// <remarks>
         /// If the path does not contain a valid image file extension, the file extension will be added.
         /// </remarks>
-        public static void ExportToFile(this IImage image, string path, Format format = Format.Jpg, Quality quality = Quality.Best)
+        public static void ExportToFile(this IImage image, string path, Format format = Format.Jpeg)
         {
             // If path has no extension.
             if (!Path.HasExtension(path))
@@ -54,7 +53,7 @@ namespace AlinSpace.FluentImages
             using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Write);
 
             // Export image to stream.
-            image.ExportToStream(fileStream, format, quality);
+            image.ExportToStream(fileStream, format);
         }
 
         /// <summary>
@@ -62,13 +61,12 @@ namespace AlinSpace.FluentImages
         /// </summary>
         /// <param name="image">Image to export.</param>
         /// <param name="format">Image format for encoding.</param>
-        /// <param name="quality">Image quality to use.</param>
         /// <returns>Raw byte array data.</returns>
-        public static byte[] ExportToByteArray(this IImage image, Format format = Format.Jpg, Quality quality = Quality.Best)
+        public static byte[] ExportToByteArray(this IImage image, Format format = Format.Jpeg)
         {
             using var memoryStream = new MemoryStream();
             
-            image.ExportToStream(memoryStream, format, quality);
+            image.ExportToStream(memoryStream, format);
             return memoryStream.ToArray();
         }
     }

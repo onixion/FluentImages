@@ -30,20 +30,34 @@ A pipeline function takes an input image and returns an output image.
 When the pipeline is configured, images can be executed on the pipeline.
 The pipeline will return a new image when executed.
 
+```csharp
+// Create a pipeline.
+var pipeline = Pipeline
+    .New()
+    .ResizeTo(300, 400)
+    .Flip(FlipDirection.Vertical);
+    
+// Load an image.
+var image = new Image(File.ReadAllBytes("Input.jpg"));
+ 
+// Execute image on the pipeline.
+var newImage = pipeline.Execute(image);
+ 
+// Export image to file.
+newImage.ExportToFile("Output.jpg");
+```
+
 ## Example - Resizing
 
 ```csharp
-// Import image.
-var image = new Image(File.ReadAllBytes("Input.jpg"));
- 
-// Resize image to 400x300.
-var newImage = Pipeline
+Pipeline
     .New()
-    .ResizeTo(400, 300)
-    .Execute(image);
-    
-// Export image.
-newImage.ExportToFile("Output.jpg");
+    // Resize image to 400x300.
+    .ResizeTo(400, 300) 
+    // Load and execute image.
+    .Execute(new Image(File.ReadAllBytes("Input.jpg")))
+    // Export result to file.
+    .ExportToFile("Output.jpg");
 ```
 
 ## Custom pipeline function

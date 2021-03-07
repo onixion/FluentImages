@@ -2,22 +2,27 @@
 
 namespace AlinSpace.FluentImages.SkiaSharp
 {
-    public class ImageTransform : IImageTransform
+    /// <summary>
+    /// Transformation implementation of <see cref="ITransformation"/>.
+    /// </summary>
+    public class Transformation : ITransformation
     {
-        SKBitmap bitmap;
-        SKBitmap newBitmap;
-
-        SKCanvas canvas;
+        readonly SKBitmap bitmap;
+        readonly SKBitmap newBitmap;
+        readonly SKCanvas canvas;
 
         public int Width => bitmap.Width;
 
         public int Height => bitmap.Height;
 
-        public ImageTransform(SKBitmap bitmap)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="bitmap">Bitmap.</param>
+        public Transformation(SKBitmap bitmap)
         {
             this.bitmap = bitmap;
             newBitmap = new SKBitmap(bitmap.Width, bitmap.Height);
-
             canvas = new SKCanvas(newBitmap);
         }
 
@@ -28,7 +33,7 @@ namespace AlinSpace.FluentImages.SkiaSharp
 
         public void Translate(int x, int y)
         {
-            canvas.Translate((float)x, (float)y);
+            canvas.Translate(x, y);
         }
 
         public void Rotate(double degrees)
@@ -36,7 +41,11 @@ namespace AlinSpace.FluentImages.SkiaSharp
             canvas.RotateDegrees((float)degrees);
         }
 
-        public SKBitmap Transform()
+        /// <summary>
+        /// Execute transformation.
+        /// </summary>
+        /// <returns>Transformed bitmap.</returns>
+        public SKBitmap Execute()
         {
             canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
             return newBitmap;

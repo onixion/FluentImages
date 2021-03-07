@@ -11,17 +11,17 @@ namespace AlinSpace.FluentImages.Gdi
     /// </summary>
     public class Image : IImage
     {
-        readonly System.Drawing.Image bitmap;
+        readonly System.Drawing.Image image;
 
         /// <summary>
         /// Width of image.
         /// </summary>
-        public int Width => bitmap.Width;
+        public int Width => image.Width;
 
         /// <summary>
         /// Height of image.
         /// </summary>
-        public int Height => bitmap.Height;
+        public int Height => image.Height;
 
         /// <summary>
         /// Constructor.
@@ -29,7 +29,7 @@ namespace AlinSpace.FluentImages.Gdi
         /// <param name="stream">Stream.</param>
         public Image(Stream stream)
         {
-            bitmap = System.Drawing.Image.FromStream(stream);
+            image = System.Drawing.Image.FromStream(stream);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace AlinSpace.FluentImages.Gdi
         public Image(byte[] rawBytes)
         {
             using var stream = new MemoryStream(rawBytes);
-            bitmap = System.Drawing.Image.FromStream(stream);
+            image = System.Drawing.Image.FromStream(stream);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace AlinSpace.FluentImages.Gdi
         /// <param name="image">Image.</param>
         public Image(Image image)
         {
-            bitmap = (System.Drawing.Image)image.bitmap.Clone();
+            this.image = (System.Drawing.Image)image.image.Clone();
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace AlinSpace.FluentImages.Gdi
         /// <param name="bitmap">SKBitmap.</param>
         private Image(System.Drawing.Image image)
         {
-            bitmap = (System.Drawing.Image)image.Clone();
+            this.image = (System.Drawing.Image)image.Clone();
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace AlinSpace.FluentImages.Gdi
         /// </summary>
         public void Dispose()
         {
-            bitmap.Dispose();
+            image.Dispose();
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace AlinSpace.FluentImages.Gdi
         /// <returns>Byte array.</returns>
         public void ExportToStream(Stream stream, Format format)
         {
-            bitmap.Save(stream, format.ToGdiFormat());
+            image.Save(stream, format.ToGdiFormat());
         }
 
         /// <summary>
@@ -96,14 +96,14 @@ namespace AlinSpace.FluentImages.Gdi
         /// <returns>New resized image.</returns>
         public IImage ResizeTo(int width, int height)
         {
-            Bitmap newBitmap = null;
+            Bitmap newImage = null;
 
             try
             {
-                newBitmap = new Bitmap(width, height);
-                newBitmap.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
+                newImage = new Bitmap(width, height);
+                newImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
-                using (var graphics = Graphics.FromImage(newBitmap))
+                using (var graphics = Graphics.FromImage(newImage))
                 {
                     graphics.CompositingMode = CompositingMode.SourceCopy;
                     graphics.CompositingQuality = CompositingQuality.HighQuality;
@@ -115,134 +115,36 @@ namespace AlinSpace.FluentImages.Gdi
                     wrapMode.SetWrapMode(WrapMode.TileFlipXY);
 
                     graphics.DrawImage(
-                        image: bitmap,
+                        image: image,
                         destRect: new System.Drawing.Rectangle(0, 0, width, height),
                         srcX: 0,
                         srcY: 0,
-                        srcWidth: bitmap.Width,
-                        srcHeight: bitmap.Height,
+                        srcWidth: image.Width,
+                        srcHeight: image.Height,
                         srcUnit: GraphicsUnit.Pixel,
                         imageAttr: wrapMode);
                 }
 
-                return new Image(newBitmap);
+                return new Image(newImage);
             }
             catch (Exception)
             {
-                newBitmap?.Dispose();
+                newImage?.Dispose();
                 throw;
             }
         }
 
         /// <summary>
-        /// Map image to rectangle area.
+        /// Transform image.
         /// </summary>
-        /// <param name="rectangle">Rectangle.</param>
-        /// <returns>Mapped image.</returns>
-        public IImage MapTo(Rectangle rectangle)
+        /// <param name="transformFunction">Transform function.</param>
+        /// <returns>Tranformed image.</returns>
+        public IImage Transform(Action<ITransformation> transformFunction)
         {
-            Bitmap newBitmap = null;
+            var transformation = new Transformation(image);
+            transformFunction(transformation);
 
-            try
-            {
-                newBitmap = new Bitmap(Width, Height);
-                newBitmap.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
-
-                using (var graphics = Graphics.FromImage(newBitmap))
-                {
-                    graphics.CompositingMode = CompositingMode.SourceCopy;
-                    graphics.CompositingQuality = CompositingQuality.HighQuality;
-                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    graphics.SmoothingMode = SmoothingMode.HighQuality;
-                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                    using var wrapMode = new ImageAttributes();
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-
-                    graphics.DrawImage(
-                        image: bitmap,
-                        destRect: rectangle.ToRectangle(),
-                        srcX: 0,
-                        srcY: 0,
-                        srcWidth: bitmap.Width,
-                        srcHeight: bitmap.Height,
-                        srcUnit: GraphicsUnit.Pixel,
-                        imageAttr: wrapMode);
-                }
-
-                return new Image(newBitmap);
-            }
-            catch (Exception)
-            {
-                newBitmap?.Dispose();
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Flip image.
-        /// </summary>
-        /// <param name="direction">Flip direction.</param>
-        /// <returns>Flipped image.</returns>
-        public IImage Flip(FlipDirection direction)
-        {
-            //var newBitmap = (Bitmap)bitmap.Clone();
-            //newBitmap.RotateFlip(direction.ToRotateFlipType());
-
-            // TODO
-
-            return this;
-        }
-
-        /// <summary>
-        /// Rotate image in degrees.
-        /// </summary>
-        /// <param name="degrees">Degrees to rotate.</param>
-        /// <param name="x">X coordinate of the rotation point.</param>
-        /// <param name="y">Y coordinate of the rotation point.</param>
-        /// <returns>Rotated image.</returns>
-        public IImage RotateInDegrees(double degrees, double x, double y)
-        {
-            Bitmap newBitmap = null;
-            
-            try
-            {
-                newBitmap = new Bitmap(Width, Height);
-                newBitmap.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
-
-                using (var graphics = Graphics.FromImage(newBitmap))
-                {
-                    graphics.CompositingMode = CompositingMode.SourceCopy;
-                    graphics.CompositingQuality = CompositingQuality.HighQuality;
-                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    graphics.SmoothingMode = SmoothingMode.HighQuality;
-                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                    using var wrapMode = new ImageAttributes();
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-
-                    graphics.TranslateTransform((float)x, (float)y);
-                    graphics.RotateTransform((float)(degrees.ToPositive()));
-                    graphics.TranslateTransform((float)-x, (float)-y);
-
-                    graphics.DrawImage(
-                        image: bitmap,
-                        destRect: new System.Drawing.Rectangle(0, 0, Width, Height),
-                        srcX: 0,
-                        srcY: 0,
-                        srcWidth: bitmap.Width,
-                        srcHeight: bitmap.Height,
-                        srcUnit: GraphicsUnit.Pixel,
-                        imageAttr: wrapMode);
-                }
-
-                return new Image(newBitmap);
-            }
-            catch (Exception)
-            {
-                newBitmap?.Dispose();
-                throw;
-            }
+            return new Image(transformation.Execute());
         }
     }
 }

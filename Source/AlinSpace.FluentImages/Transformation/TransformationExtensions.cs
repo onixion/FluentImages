@@ -3,9 +3,9 @@
 namespace AlinSpace.FluentImages
 {
     /// <summary>
-    /// Extensions for <see cref="IImageTransform"/>.
+    /// Extensions for <see cref="ITransformation"/>.
     /// </summary>
-    public static class ImageTransformExtensions
+    public static class TransformationExtensions
     {
         /// <summary>
         /// Flip.
@@ -13,7 +13,7 @@ namespace AlinSpace.FluentImages
         /// <param name="transform">Transform.</param>
         /// <param name="direction">Flip direction.</param>
         /// <returns>Transform.</returns>
-        public static IImageTransform Flip(this IImageTransform transform, FlipDirection direction)
+        public static ITransformation Flip(this ITransformation transform, FlipDirection direction)
         {
             switch (direction)
             {
@@ -45,7 +45,7 @@ namespace AlinSpace.FluentImages
         /// <param name="transform">Transform.</param>
         /// <param name="rectangle">Area to map to.</param>
         /// <returns>Transform.</returns>
-        public static IImageTransform MapTo(this IImageTransform transform, Rectangle rectangle)
+        public static ITransformation MapTo(this ITransformation transform, Rectangle rectangle)
         {
             transform.Scale(
                 x: (double)rectangle.Width / transform.Width,
@@ -68,7 +68,7 @@ namespace AlinSpace.FluentImages
         /// <param name="x">X coordinate of the rotation point.</param>
         /// <param name="y">Y coordinate of the rotation point.</param>
         /// <returns>Transform.</returns>
-        public static IImageTransform RotateInDegrees(this IImageTransform transform, double degrees, int x, int y)
+        public static ITransformation RotateInDegrees(this ITransformation transform, double degrees, int x, int y)
         {
             transform.Translate(x, y);
             transform.Rotate(degrees);
@@ -83,7 +83,7 @@ namespace AlinSpace.FluentImages
         /// <param name="transform">Transform.</param>
         /// <param name="degrees">Degrees to rotate.</param>
         /// <returns>Transform.</returns>
-        public static IImageTransform RotateInDegrees(this IImageTransform transform, double degrees)
+        public static ITransformation RotateInDegrees(this ITransformation transform, double degrees)
         {
             return transform.RotateInDegrees(
                 degrees: degrees,
@@ -99,7 +99,7 @@ namespace AlinSpace.FluentImages
         /// <param name="x">X coordinate of the rotation point.</param>
         /// <param name="y">Y coordinate of the rotation point.</param>
         /// <returns>Transform.</returns>
-        public static IImageTransform RotateInPercentage(this IImageTransform transform, double percentage, int x, int y)
+        public static ITransformation RotateInPercentage(this ITransformation transform, double percentage, int x, int y)
         {
             return transform.RotateInDegrees(percentage * 360.0f, x, y);
         }
@@ -110,7 +110,7 @@ namespace AlinSpace.FluentImages
         /// <param name="transform">Transform.</param>
         /// <param name="percentage">Percentage to rotate.</param>
         /// <returns>Transform.</returns>
-        public static IImageTransform RotateInPercentage(this IImageTransform transform, double percentage)
+        public static ITransformation RotateInPercentage(this ITransformation transform, double percentage)
         {
             return transform.RotateInDegrees(percentage * 360.0f);
         }

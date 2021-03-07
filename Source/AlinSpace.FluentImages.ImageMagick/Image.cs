@@ -99,40 +99,13 @@ namespace AlinSpace.FluentImages.Magick
         }
 
         /// <summary>
-        /// Map image to rectangle area.
+        /// Transform image.
         /// </summary>
-        /// <param name="rectangle">Rectangle.</param>
-        /// <returns>Mapped image.</returns>
-        public IImage MapTo(Rectangle rectangle)
+        /// <param name="transformFunction">Transform function.</param>
+        /// <returns>Tranformed image.</returns>
+        public IImage Transform(Action<ITransformation> transformFunction)
         {
-            return this;
-        }
 
-        /// <summary>
-        /// Flip image.
-        /// </summary>
-        /// <param name="direction">Flip direction.</param>
-        /// <returns>Flipped image.</returns>
-        public IImage Flip(FlipDirection direction)
-        {
-            //var newBitmap = (Bitmap)bitmap.Clone();
-            //newBitmap.RotateFlip(direction.ToRotateFlipType());
-
-            // TODO
-
-            return this;
-        }
-
-        /// <summary>
-        /// Rotate image in degrees.
-        /// </summary>
-        /// <param name="degrees">Degrees to rotate.</param>
-        /// <param name="x">X coordinate of the rotation point.</param>
-        /// <param name="y">Y coordinate of the rotation point.</param>
-        /// <returns>Rotated image.</returns>
-        public IImage RotateInDegrees(double degrees, double x, double y)
-        {
-            return this;
         }
     }
 }

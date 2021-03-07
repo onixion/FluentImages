@@ -1,132 +1,210 @@
-﻿
-//using System.IO;
-//using Xunit;
+﻿using AlinSpace.FluentImages.Gdi;
+using System.IO;
+using Xunit;
 
-//namespace AlinSpace.FluentImages.Tests.Gdi
-//{
-//    public class Tests
-//    {
-//        [Fact]
-//        public void ResizeTo_1()
-//        {
-//            // Act
-//            //Pipeline
-//            //    .New()
-//            //    .ResizeTo(400, 300)
-//            //    .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//            //    .ExportToFile("Tests.Gdi.ResizeTo_1.jpg");
+namespace AlinSpace.FluentImages.Tests.Gdi
+{
+    public class Tests
+    {
+        public const string LibraryName = "Gdi";
 
-//            // Assert
-//            //var image = new Image(File.ReadAllBytes("Tests.SkiaSharp.ResizeTo_1.jpg"));
+        [Fact]
+        public void ResizeTo_1()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
 
-//            //Assert.Equal(400, image.Width);
-//            //Assert.Equal(300, image.Height);
-//        }
+            var pipeline = Pipeline
+                .New()
+                .ResizeTo(400, 400);
 
-//        [Fact]
-//        public void Flip_1()
-//        {
-//            // Act
-//            Pipeline
-//                .New()
-//                .Flip(FlipDirection.Horizontal)
-//                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//                .ExportToFile("Tests.Gdi.Flip_1.jpg");
-//        }
+            // Act
+            var newImage = pipeline.Execute(image);
 
-//        [Fact]
-//        public void Flip_2()
-//        {
-//            // Act
-//            Pipeline
-//                .New()
-//                .Flip(FlipDirection.Vertical)
-//                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//                .ExportToFile("Tests.Gdi.Flip_2.jpg");
-//        }
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(ResizeTo_1)}.jpg");
 
-//        [Fact]
-//        public void Flip_3()
-//        {
-//            // Act
-//            Pipeline
-//                .New()
-//                .Flip(FlipDirection.Both)
-//                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//                .ExportToFile("Tests.Gdi.Flip_3.jpg");
-//        }
+            // Assert
+            Assert.Equal(400, newImage.Width);
+            Assert.Equal(400, newImage.Height);
+        }
 
-//        [Fact]
-//        public void RotateInDegrees_1()
-//        {
-//            // Act
-//            Pipeline
-//                .New()
-//                .RotateInDegrees(45)
-//                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//                .ExportToFile("Tests.Gdi.RotateInDegrees_1.jpg");
-//        }
+        [Fact]
+        public void ResizeTo_2()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
 
-//        [Fact]
-//        public void RotateInPercentage_1()
-//        {
-//            // Act
-//            Pipeline
-//                .New()
-//                .RotateInPercentage(0.25)
-//                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//                .ExportToFile("Tests.Gdi.RotateInPercentage_1.jpg");
-//        }
+            var pipeline = Pipeline
+                .New()
+                .ResizeToHeight(500);
 
-//        [Fact]
-//        public void RotateInPercentage_2()
-//        {
-//            // Act
-//            Pipeline
-//                .New()
-//                .RotateInPercentage(-0.25)
-//                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//                .ExportToFile("Tests.Gdi.RotateInPercentage_2.jpg");
-//        }
+            // Act
+            var newImage = pipeline.Execute(image);
 
-//        [Fact]
-//        public void MapTo_1()
-//        {
-//            // Act
-//            Pipeline
-//                .New()
-//                .MapTo(new Rectangle(50, 50, 0, 0))
-//                .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//                .ExportToFile("Tests.Gdi.MapTo_1.jpg");
-//        }
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(ResizeTo_2)}.jpg");
 
-//        //[Fact]
-//        //public void BlendWith_1()
-//        //{
-//        //    // Act
-//        //    Pipeline
-//        //        .New()
-//        //        .BlendWith(() => new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//        //        .Execute(new Image(File.ReadAllBytes(Constants.TestImagePath)))
-//        //        .ExportToFile("Test.TranslateInPercentage.0.5.0.5");
-//        //}
+            // Assert
+            Assert.Equal((int)(500 * image.GetAspectRatio()), newImage.Width);
+            Assert.Equal(500, newImage.Height);
+        }
 
-//        //[Fact]
-//        //public void Test()
-//        //{
-//        //    var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+        [Fact]
+        public void ResizeTo_3()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
 
-//        //    // Act
-//        //    Pipeline
-//        //        .New()
-//        //        .TranslateInPercentage(0.01, 0.01)
-//        //        .ExportToFile(
-//        //            image,
-//        //            "Test.000000.NoBl")
-//        //        //.BlendWith(() => image)
-//        //        .ExportToFile(
-//        //            image,
-//        //            "Test.000000.Bl");
-//        //}
-//    }
-//}
+            var pipeline = Pipeline
+                .New()
+                .ResizeToWidth(500);
+
+            // Act
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(ResizeTo_3)}.jpg");
+
+            // Assert
+            Assert.Equal(500, newImage.Width);
+            Assert.Equal((int)(500 / image.GetAspectRatio()), newImage.Height);
+        }
+
+        [Fact]
+        public void Transform_Flip_Both()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .Flip(FlipDirection.Both);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_Flip_Both)}.jpg");
+        }
+
+        [Fact]
+        public void Transform_Flip_Horizontal()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .Flip(FlipDirection.Horizontal);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_Flip_Horizontal)}.jpg");
+        }
+
+        [Fact]
+        public void Transform_Flip_Vertical()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .Flip(FlipDirection.Vertical);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_Flip_Vertical)}.jpg");
+        }
+
+        [Fact]
+        public void Transform_MapTo_1()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .MapTo(new Rectangle(200, 200, 400, 400));
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_MapTo_1)}.jpg");
+        }
+
+        [Fact]
+        public void Transform_MapTo_2()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .MapTo(new Rectangle(0, 500, 1920, 1080));
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_MapTo_2)}.jpg");
+        }
+
+        [Fact]
+        public void Transform_RotateInDegrees_1()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .RotateInDegrees(45.0, 0, 0);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_RotateInDegrees_1)}.jpg");
+        }
+
+        [Fact]
+        public void Transform_RotateInDegrees_2()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .RotateInDegrees(-45.0, 1920, 0);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_RotateInDegrees_2)}.jpg");
+        }
+
+        [Fact]
+        public void Transform_RotateInDegrees_3()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .RotateInDegrees(45.0);
+
+            // Act.
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_RotateInDegrees_3)}.jpg");
+        }
+    }
+}

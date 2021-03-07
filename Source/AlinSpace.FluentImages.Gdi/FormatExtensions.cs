@@ -18,7 +18,7 @@ namespace AlinSpace.FluentImages.Gdi
             return format switch
             {
                 Format.Png => ImageFormat.Png,
-                Format.Jpg => ImageFormat.Jpeg,
+                Format.Jpeg => ImageFormat.Jpeg,
                 _ => throw new Exception($"Format not supported: {format}"),
             };
         }

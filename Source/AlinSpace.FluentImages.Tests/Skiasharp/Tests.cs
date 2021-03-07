@@ -6,6 +6,8 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
 {
     public class Tests
     {
+        public const string LibraryName = "SkiaSharp";
+
         [Fact]
         public void ResizeTo_1()
         {
@@ -14,17 +16,59 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
 
             var pipeline = Pipeline
                 .New()
-                .ResizeTo(400, 300);
+                .ResizeTo(400, 400);
 
-            // Act.
+            // Act
             var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(ResizeTo_1)}.jpg");
 
             // Assert
             Assert.Equal(400, newImage.Width);
-            Assert.Equal(300, newImage.Height);
+            Assert.Equal(400, newImage.Height);
+        }
+
+        [Fact]
+        public void ResizeTo_2()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .ResizeToHeight(500);
+
+            // Act
+            var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile("Tests.SkiaSharp.ResizeTo_1.jpg");
+            newImage.ExportToFile($"{LibraryName}.{nameof(ResizeTo_2)}.jpg");
+
+            // Assert
+            Assert.Equal((int)(500 * image.GetAspectRatio()), newImage.Width);
+            Assert.Equal(500, newImage.Height);
+        }
+
+        [Fact]
+        public void ResizeTo_3()
+        {
+            // Prepare
+            var image = new Image(File.ReadAllBytes(Constants.TestImagePath));
+
+            var pipeline = Pipeline
+                .New()
+                .ResizeToWidth(500);
+
+            // Act
+            var newImage = pipeline.Execute(image);
+
+            // Export
+            newImage.ExportToFile($"{LibraryName}.{nameof(ResizeTo_3)}.jpg");
+
+            // Assert
+            Assert.Equal(500, newImage.Width);
+            Assert.Equal((int)(500 / image.GetAspectRatio()), newImage.Height);
         }
 
         [Fact]
@@ -41,9 +85,8 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile("Tests.SkiaSharp.Transform_Flip_Both.jpg");
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_Flip_Both)}.jpg");
         }
-
 
         [Fact]
         public void Transform_Flip_Horizontal()
@@ -59,7 +102,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile("Tests.SkiaSharp.Transform_Flip_Horizontal.jpg");
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_Flip_Horizontal)}.jpg");
         }
 
         [Fact]
@@ -76,7 +119,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile("Tests.SkiaSharp.Transform_Flip_Vertical.jpg");
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_Flip_Vertical)}.jpg");
         }
 
         [Fact]
@@ -93,7 +136,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile("Tests.SkiaSharp.Transform_MapTo_1.jpg");
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_MapTo_1)}.jpg");
         }
 
         [Fact]
@@ -110,7 +153,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile("Tests.SkiaSharp.Transform_MapTo_2.jpg");
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_MapTo_2)}.jpg");
         }
 
         [Fact]
@@ -127,7 +170,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile("Tests.SkiaSharp.Transform_RotateInDegrees_1.jpg");
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_RotateInDegrees_1)}.jpg");
         }
 
         [Fact]
@@ -138,13 +181,13 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
 
             var pipeline = Pipeline
                 .New()
-                .RotateInDegrees(45.0, 100, 100);
+                .RotateInDegrees(-45.0, 1920, 0);
 
             // Act.
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile("Tests.SkiaSharp.Transform_RotateInDegrees_2.jpg");
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_RotateInDegrees_2)}.jpg");
         }
 
         [Fact]
@@ -161,7 +204,7 @@ namespace AlinSpace.FluentImages.Tests.Skiasharp
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile("Tests.SkiaSharp.Transform_RotateInDegrees_3.jpg");
+            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_RotateInDegrees_3)}.jpg");
         }
     }
 }

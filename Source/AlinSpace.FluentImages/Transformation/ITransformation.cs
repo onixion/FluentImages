@@ -3,9 +3,9 @@
 namespace AlinSpace.FluentImages
 {
     /// <summary>
-    /// Image transform interface.
+    /// Transformation interface.
     /// </summary>
-    public interface IImageTransform : IDisposable
+    public interface ITransformation : IDisposable
     {
         /// <summary>
         /// Width of the image.

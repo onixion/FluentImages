@@ -45,14 +45,6 @@ namespace AlinSpace.FluentImages
         /// </summary>
         /// <param name="transformFunction">Transform function.</param>
         /// <returns>Tranformed image.</returns>
-        IImage Transform(Action<IImageTransform> transformFunction);
-
-        /// <summary>
-        /// Apply blend layer.
-        /// </summary>
-        /// <param name="layer">Image blend layer.</param>
-        /// <param name="mode">Blending mode to use when applying the blend layer.</param>
-        /// <returns></returns>
-        //IImage BlendWithLayer(IImage layer, BlendMode mode = BlendMode.Normal);
+        IImage Transform(Action<ITransformation> transformFunction);
     }
 }

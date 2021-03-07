@@ -53,8 +53,7 @@ namespace AlinSpace.FluentImages
         /// <returns>New resized image.</returns>
         public static Pipeline ResizeTo(this Pipeline pipeline, int width, int height)
         {
-            pipeline.AddFunction(image => image.ResizeTo(width, height));
-            return pipeline;
+            return pipeline.AddFunction(image => image.ResizeTo(width, height));
         }
 
         /// <summary>
@@ -66,12 +65,10 @@ namespace AlinSpace.FluentImages
         /// <returns>New resized image.</returns>
         public static Pipeline ResizeInPercentage(this Pipeline pipeline, double widthNormalized, double heigthNormalized)
         {
-            pipeline.AddFunction(image =>
-                image.ResizeTo(
+            return pipeline.AddFunction(
+                image => image.ResizeTo(
                     width: (int)(image.Width * widthNormalized),
                     height: (int)(image.Height * heigthNormalized)));
-
-            return pipeline;
         }
 
         /// <summary>
@@ -82,11 +79,7 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline ResizeToWidth(this Pipeline pipeline, int width)
         {
-            return pipeline.AddFunction(image =>
-            {
-                var newHeight = (int)(width / image.GetAspectRatio());
-                return image.ResizeTo(width, newHeight);
-            });
+            return pipeline.AddFunction(image => image.ResizeTo(width, (int)(width / image.GetAspectRatio())));
         }
 
         /// <summary>
@@ -97,11 +90,9 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline ResizeToHeight(this Pipeline pipeline, int height)
         {
-            return pipeline.AddFunction(image =>
-            {
-                var newWidth = (int)(image.GetAspectRatio() * height);
-                return image.ResizeTo(newWidth, height);
-            });
+            return pipeline.AddFunction(image => image.ResizeTo(
+                width: (int)(image.GetAspectRatio() * height), 
+                height: height));
         }
 
         /// <summary>
@@ -112,13 +103,9 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline ResizeToWidthScaled(this Pipeline pipeline, double widthFactor)
         {
-            return pipeline.AddFunction(image =>
-            {
-                var newWidth = (image.Width * widthFactor);
-                var newHeight = newWidth / image.GetAspectRatio();
-
-                return image.ResizeTo((int)newWidth, (int)newHeight);
-            });
+            return pipeline.AddFunction(image => image.ResizeTo(
+                width: (int)(image.Width * widthFactor),
+                height: (int)(image.Width * widthFactor / image.GetAspectRatio())));
         }
 
         /// <summary>
@@ -129,13 +116,9 @@ namespace AlinSpace.FluentImages
         /// <returns>Pipeline.</returns>
         public static Pipeline ResizeToHeightScaled(this Pipeline pipeline, double heightFactor)
         {
-            return pipeline.AddFunction(image =>
-            {
-                var newHeight = (image.Height * heightFactor);
-                var newWidth = newHeight * image.GetAspectRatio();
-
-                return image.ResizeTo((int)newWidth, (int)newHeight);
-            });
+            return pipeline.AddFunction(image => image.ResizeTo(
+                width: (int)(image.Height * heightFactor),
+                height: (int)(image.Height * heightFactor * image.GetAspectRatio())));
         }
 
         #endregion
@@ -148,7 +131,7 @@ namespace AlinSpace.FluentImages
         /// <param name="pipeline">Pipeline.</param>
         /// <param name="transformFunction">Transform function.</param>
         /// <returns>Pipeline.</returns>
-        public static Pipeline Transform(this Pipeline pipeline, Action<IImageTransform> transformFunction)
+        public static Pipeline Transform(this Pipeline pipeline, Action<ITransformation> transformFunction)
         {
             return pipeline.AddFunction(image => image.Transform(transformFunction));
         }

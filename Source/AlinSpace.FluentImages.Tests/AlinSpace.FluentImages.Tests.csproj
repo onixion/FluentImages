@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AlinSpace.FluentImages.Gdi\AlinSpace.FluentImages.Gdi.csproj" />
     <ProjectReference Include="..\AlinSpace.FluentImages.SkiaSharp\AlinSpace.FluentImages.SkiaSharp.csproj" />
   </ItemGroup>
 

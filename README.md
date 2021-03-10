@@ -10,9 +10,7 @@ A simple fluent library for image processing.
 ## Supported image libraries
 
 - **SkiaSharp**: [AlinSpace.FluentImages.SkiaSharp](https://www.nuget.org/packages/AlinSpace.FluentImages.SkiaSharp/)
-- **System.Drawing**: AlinSpace.FluentImages.Gdi
-- **Magick.NET**: AlinSpace.FluentImages.Magick
-- **ImageSharp**: AlinSpace.FluentImages.ImageSharp
+- **System.Drawing**: [AlinSpace.FluentImages.Gdi](https://www.nuget.org/packages/AlinSpace.FluentImages.Gdi/)
 
 ## Why?
 

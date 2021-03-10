@@ -13,6 +13,8 @@ namespace AlinSpace.FluentImages.Magick
         IMagickImage<ushort> image;
         IMagickImage<ushort> newImage;
 
+        DrawableAffine affineMatrix = new DrawableAffine();
+        MatrixFactory f;
         public int Width => image.Width;
 
         public int Height => image.Height;
@@ -29,29 +31,31 @@ namespace AlinSpace.FluentImages.Magick
 
         public void Scale(double x, double y)
         {
+            affineMatrix.TransformScale(x, y);
         }
 
         public void Translate(int x, int y)
         {
+           
         }
 
         public void Rotate(double degrees)
         {
+            affineMatrix.TransformRotation(degrees);
         }
 
         /// <summary>
         /// Execute transformation.
         /// </summary>
         /// <returns>Transformed bitmap.</returns>
-        public SKBitmap Execute()
+        public IMagickImage<ushort> Execute()
         {
-            canvas.DrawBitmap(bitmap, 0.0f, 0.0f);
-            return newBitmap;
+            newImage.AffineTransform(affineMatrix);
+            return newImage;
         }
 
         public void Dispose()
         {
-            canvas.Dispose();
         }
     }
 }

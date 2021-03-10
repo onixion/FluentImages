@@ -18,7 +18,7 @@ namespace AlinSpace.FluentImages.Magick
             return format switch
             {
                 Format.Png => MagickFormat.Png,
-                Format.Jpg => MagickFormat.Jpeg,
+                Format.Jpeg => MagickFormat.Jpeg,
                 _ => throw new Exception($"Format not supported: {format}"),
             };
         }

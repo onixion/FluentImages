@@ -2,14 +2,31 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <Version>1.0.4</Version>
+    <Company>Alin Andersen</Company>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>System.Drawing support for the FluentImages library.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © 2021 Alin Andersen</Copyright>
+    <PackageProjectUrl>https://github.com/onixion/FluentImages</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/onixion/FluentImages</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>fluent, images, fluentimages, fluent images, image processing, gdi, system drawing</PackageTags>
+    <PackageReleaseNotes>Flipping is not yet supported.</PackageReleaseNotes>
+    <PackageIcon>Icon.jpg</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AlinSpace.FluentImages" Version="1.0.4" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AlinSpace.FluentImages\AlinSpace.FluentImages.csproj" />
+    <None Include="Icon.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

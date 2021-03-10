@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>Alin Andersen</Authors>
-    <Description>SkiaSharp support for FluentImages library.</Description>
+    <Description>SkiaSharp support for the FluentImages library.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright © 2021 Alin Andersen</Copyright>
     <PackageProjectUrl>https://github.com/onixion/FluentImages</PackageProjectUrl>
@@ -13,8 +13,8 @@
     <PackageTags>fluent, images, fluentimages, fluent images, image processing, skia, skiasharp</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.0.3</Version>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <Version>1.0.4</Version>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,11 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AlinSpace.FluentImages" Version="1.0.4" />
     <PackageReference Include="SkiaSharp" Version="2.80.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AlinSpace.FluentImages\AlinSpace.FluentImages.csproj" />
   </ItemGroup>
 
 </Project>

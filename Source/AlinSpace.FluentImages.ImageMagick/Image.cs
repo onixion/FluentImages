@@ -94,7 +94,7 @@ namespace AlinSpace.FluentImages.Magick
         /// <returns>New resized image.</returns>
         public IImage ResizeTo(int width, int height)
         {
-            image.Resize(width, height);
+            image.InterpolativeResize(width, height, PixelInterpolateMethod.Average);
             return this;
         }
 
@@ -105,7 +105,9 @@ namespace AlinSpace.FluentImages.Magick
         /// <returns>Tranformed image.</returns>
         public IImage Transform(Action<ITransformation> transformFunction)
         {
-
+            var transformation = new Transformation(image);
+            transformFunction(transformation);
+            return new Image(transformation.Execute());
         }
     }
 }

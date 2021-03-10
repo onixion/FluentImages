@@ -22,7 +22,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(ResizeTo_1)}.jpg");
+            newImage.ExportToFile($"{nameof(ResizeTo_1)}.{LibraryName}.jpg");
 
             // Assert
             Assert.Equal(400, newImage.Width);
@@ -43,7 +43,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(ResizeTo_2)}.jpg");
+            newImage.ExportToFile($"{nameof(ResizeTo_2)}.{LibraryName}.jpg");
 
             // Assert
             Assert.Equal((int)(500 * image.GetAspectRatio()), newImage.Width);
@@ -64,7 +64,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(ResizeTo_3)}.jpg");
+            newImage.ExportToFile($"{nameof(ResizeTo_3)}.{LibraryName}.jpg");
 
             // Assert
             Assert.Equal(500, newImage.Width);
@@ -85,7 +85,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_Flip_Both)}.jpg");
+            newImage.ExportToFile($"{nameof(Transform_Flip_Both)}.{LibraryName}.jpg");
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_Flip_Horizontal)}.jpg");
+            newImage.ExportToFile($"{nameof(Transform_Flip_Horizontal)}.{LibraryName}.jpg");
         }
 
         [Fact]
@@ -119,7 +119,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_Flip_Vertical)}.jpg");
+            newImage.ExportToFile($"{nameof(Transform_Flip_Vertical)}.{LibraryName}.jpg");
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_MapTo_1)}.jpg");
+            newImage.ExportToFile($"{nameof(Transform_MapTo_1)}.{LibraryName}.jpg");
         }
 
         [Fact]
@@ -153,7 +153,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_MapTo_2)}.jpg");
+            newImage.ExportToFile($"{nameof(Transform_MapTo_2)}.{LibraryName}.jpg");
         }
 
         [Fact]
@@ -170,7 +170,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_RotateInDegrees_1)}.jpg");
+            newImage.ExportToFile($"{nameof(Transform_RotateInDegrees_1)}.{LibraryName}.jpg");
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_RotateInDegrees_2)}.jpg");
+            newImage.ExportToFile($"{nameof(Transform_RotateInDegrees_2)}.{LibraryName}.jpg");
         }
 
         [Fact]
@@ -204,7 +204,7 @@ namespace AlinSpace.FluentImages.Tests.Gdi
             var newImage = pipeline.Execute(image);
 
             // Export
-            newImage.ExportToFile($"{LibraryName}.{nameof(Transform_RotateInDegrees_3)}.jpg");
+            newImage.ExportToFile($"{nameof(Transform_RotateInDegrees_3)}.{LibraryName}.jpg");
         }
     }
 }
